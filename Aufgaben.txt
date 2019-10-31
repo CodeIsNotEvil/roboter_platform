@@ -5,7 +5,7 @@ Komponente			|	Priorität	|	wird bearbeitet von
 -------------------------------------------------------------------------------------
 ESC (Motorsteuerung)		|	hoch		|	Yves
 Servo (Lenkung)			|	hoch		|	Yves
-Funkkommunikation		|	hoch		|	nicht in Bearbeitung
+Funkkommunikation		|	hoch		|	Lukas
 mechanischer Aufbau		|	hoch		|	Yves
 MPPT Solarlader			|	niedrig		|	nicht in Bearbeitung
 Bluetooth Beacon Tracking	|
