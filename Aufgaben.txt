@@ -1,0 +1,14 @@
+Aufgaben zum Roboterprojekt:
+
+
+Komponente			|	Priorität	|	wird bearbeitet von
+-------------------------------------------------------------------------------------
+ESC (Motorsteuerung)		|	hoch		|	Yves
+Servo (Lenkung)			|	hoch		|	Yves
+Funkkommunikation		|	hoch		|	nicht in Bearbeitung
+mechanischer Aufbau		|	hoch		|	Yves
+MPPT Solarlader			|	niedrig		|	nicht in Bearbeitung
+Bluetooth Beacon Tracking	|
+(Roboter soll Handy folgen)	|	mittel		|	n.i.B.
+Temperaturmessung		|
+(mit DS1820)			|	hoch		|	n.i.B
