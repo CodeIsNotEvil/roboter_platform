@@ -1,0 +1,16 @@
+Anforderungen:
+----------------------------------------------------------------------------------------
+
+Fernsteuerung:
+
+	-Funkverbindung zum Roboter per NRF24L01
+	-manuelle Steuerung des Roboters, Lenkung via Joystick
+	-Statusanzeige (Signalstärke, Temperatur(en)....)
+	
+
+
+Roboter:
+
+	-Funkverbindung zur Fernsteuerung per NRF24L01
+	-fahren, vorwärts und rückwärts(Umschaltung per Relais)
+	-

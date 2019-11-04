@@ -1,0 +1,43 @@
+Master Controller (Atmega328p in der Fernsteuerung):
+----------------------------------------------------------------------------------------------------
+Spannungsversorgung: 5V von USB oder integriertem Akku (stabile 5V durch Buck Boost)
+
+Ressourcen die bereits reserviert sind:
+	-Timer0 für Standardfunktionen wie millis()
+	-Timer1 für LCD Beleuchtung PWM (Kann notfalls frei gemacht werden)
+	-Timer2 für regelmäßige Interrupts (1ms) für allgemeinen Gebrauch (z.B. ADC, Tasterabfragen etc.)
+	-Hardware SPI für LCD (kann auch für andere Geräte genutzt werden)
+	-alle PWM Ausgänge bereits in Gebrauch
+
+
+
+____________________________________________________________________________________________________
+Slave Controller (Atmega168 im Roboter):
+----------------------------------------------------------------------------------------------------
+Spannungsversorgung: 5V, vermutlich durch LDO des ESC. Alternativ durch Schaltspannungsregler XL4015.
+
+Ressourcen die bereits reserviert sind:
+	-Timer0 für millis()
+	-Timer1 für Servo- und Antriebssteuerung
+
+
+____________________________________________________________________________________________________
+Roboter:
+----------------------------------------------------------------------------------------------------
+Spannungsversorgung: 7,4V Li-Po Akku
+
+Lenkung: 1 Servo
+
+Antrieb: 1 bürstenloser Motor (Außenläufer, ca. 2200kV), treibt Hinterachse
+
+Hinterachse mit Differenzial
+
+Funk: NRF24L01, 2,4GHz
+
+Schutzmaßnahmen: Temperaturüberwachung des Motors mit DS1820
+
+
+
+optional:
+	-Ultraschall Abstandssensoren
+	-MPPT für Solarzellen (für bis zu 40 Zellen in Reihe, max. 24V)
