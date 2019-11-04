@@ -6,7 +6,7 @@ Ressourcen die bereits reserviert sind:
 	-Timer0 für Standardfunktionen wie millis()
 	-Timer1 für LCD Beleuchtung PWM (Kann notfalls frei gemacht werden)
 	-Timer2 für regelmäßige Interrupts (1ms) für allgemeinen Gebrauch (z.B. ADC, Tasterabfragen etc.)
-	-Hardware SPI für LCD (kann auch für andere Geräte genutzt werden)
+	-Hardware SPI für LCD und NRF24 (kann auch für andere Geräte genutzt werden)
 	-alle PWM Ausgänge bereits in Gebrauch
 
 
@@ -19,6 +19,7 @@ Spannungsversorgung: 5V, vermutlich durch LDO des ESC. Alternativ durch Schaltsp
 Ressourcen die bereits reserviert sind:
 	-Timer0 für millis()
 	-Timer1 für Servo- und Antriebssteuerung
+	-Hardware SPI für NRF24
 
 
 ____________________________________________________________________________________________________
@@ -26,7 +27,7 @@ Roboter:
 ----------------------------------------------------------------------------------------------------
 Spannungsversorgung: 7,4V Li-Po Akku
 
-Lenkung: 1 Servo
+Lenkung: 1 Servo (MG996R, 8,4V, Drehmoment 15 kg*cm)
 
 Antrieb: 1 bürstenloser Motor (Außenläufer, ca. 2200kV), treibt Hinterachse
 
