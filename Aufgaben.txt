@@ -11,4 +11,4 @@ MPPT Solarlader			|	niedrig		|	nicht in Bearbeitung
 Bluetooth Beacon Tracking	|
 (Roboter soll Handy folgen)	|	mittel		|	n.i.B.
 Temperaturmessung		|
-(mit DS1820)			|	hoch		|	n.i.B
+(mit DS1820)			|	hoch		|	Nick
