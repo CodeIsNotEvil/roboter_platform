@@ -1,0 +1,30 @@
+Ultraschallsensoren:
+
+	-Trigger für alle Sensoren	= A2
+	-Echo für B1			= D6
+	-Echo für B2			= D5
+	-Echo für B3			= A1
+
+Gyroskopsensor:
+
+	-INT Pin			= A3
+	-I²C				= HW I²C vorgabe (A4 und A5)
+
+Funkmodul:
+
+	-CE				= A0
+	-IRQ				= D2 (INT0)
+	-SPI				= HW SPI vorgabe (D11 bis D13)
+
+Motortreiber:
+
+	B
+	-In4 - D7
+	-In3 - D9 (OC1A)
+	A
+	-In2 - D8
+	-In1 - D10 (OC1B)
+
+DS1820 Temperatursensoren:
+
+	-D4

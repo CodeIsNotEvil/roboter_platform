@@ -1,0 +1,7 @@
+
+Funkmodul:
+
+	-CE				= A1
+	-IRQ				= A0
+	-SPI				= HW SPI vorgabe (D11 bis D13)
+
