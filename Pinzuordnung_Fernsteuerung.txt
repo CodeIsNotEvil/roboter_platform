@@ -1,7 +1,8 @@
 
 Funkmodul:
 
-	-CE				= A1
-	-IRQ				= A0
+	-CE				= A2
+	-IRQ				= A1
 	-SPI				= HW SPI vorgabe (D11 bis D13)
+	-CSN				= A3
 

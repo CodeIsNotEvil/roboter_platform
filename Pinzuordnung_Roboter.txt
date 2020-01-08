@@ -15,6 +15,7 @@ Funkmodul:
 	-CE				= A0
 	-IRQ				= D2 (INT0)
 	-SPI				= HW SPI vorgabe (D11 bis D13)
+	-D3				= CSN
 
 Motortreiber:
 
