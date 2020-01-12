@@ -2,7 +2,7 @@
 #include <nRF24L01.h>
 #include <RF24.h>
 
-RF24 radio(3, 2); // CE, CSN
+RF24 radio(A0, 3); // CE, CSN
 
 const byte address[6] = "00001";
 
@@ -21,7 +21,7 @@ void loop() {
 
     radio.read(&text, sizeof(text));
    
-    Serial.print("recieved: ");
+    Serial.print("received: ");
     Serial.println(text);
   }
 }
