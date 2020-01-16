@@ -1,0 +1,139 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Lachaise Assignment
+% LaTeX Template
+% Version 1.0 (26/6/2018)
+%
+% This template originates from:
+% http://www.LaTeXTemplates.com
+%
+% Authors:
+% Marion Lachaise & François Févotte
+% Vel (vel@LaTeXTemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+
+%----------------------------------------------------------------------------------------
+%	INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Open Source Roboter Plattform} % Title
+
+\author{Lukas Reichwein\\ Yves Ehrlich\\ Nick Gnoevoj}
+
+\date{University of Applied Science Fulda --- \today} % University, school and/or department name(s) and a date
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title
+\tableofcontents % Inhaltsverzeichniss, Achtung zweimal Compilerien!
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	INTRODUCTION
+%----------------------------------------------------------------------------------------
+
+\section*{Vorwort} % Unnumbered section
+
+	Motivation, Basis, Ziel des Projektes.
+
+\newpage
+%----------------------------------------------------------------------------------------
+%	Latex Beispeiele
+%----------------------------------------------------------------------------------------
+\section{Beispiele für Spezielle LaTeX Strukturen}
+
+\begin{info} % Information block
+	benutze den Info block um wichtige informationen hervorzuheben.
+\end{info}
+
+%----------------------------------------------------------------------------------------
+%	Beispiel für Pseudo Code.
+%----------------------------------------------------------------------------------------
+
+\begin{center}
+	\begin{minipage}{0.5\linewidth} % Adjust the minipage width to accomodate for the length of algorithm lines
+		\begin{algorithm}[H]
+			\KwIn{$(a, b)$, two floating-point numbers}  % Algorithm inputs
+			\KwResult{$(c, d)$, such that $a+b = c + d$} % Algorithm outputs/results
+			\medskip
+			\If{$\vert b\vert > \vert a\vert$}{
+				exchange $a$ and $b$ \;
+			}
+			$c \leftarrow a + b$ \;
+			$z \leftarrow c - a$ \;
+			$d \leftarrow b - z$ \;
+			{\bf return} $(c,d)$ \;
+			\caption{\texttt{FastTwoSum}} % Algorithm name
+			\label{alg:fastTwoSum}   % optional label to refer to
+		\end{algorithm}
+	\end{minipage}
+\end{center}
+
+%----------------------------------------------------------------------------------------
+%	Beispiel für Code Snippets.
+%----------------------------------------------------------------------------------------
+
+% File contents
+\begin{file}[hello.py]
+\begin{lstlisting}[language=Python]
+#! /usr/bin/python
+
+import sys
+sys.stdout.write("Hello World!\n")
+\end{lstlisting}
+\end{file}
+
+%----------------------------------------------------------------------------------------
+%	Example for Console Prints (can also be usefull for displaying Serial monitor)
+%----------------------------------------------------------------------------------------
+
+
+% Command-line "screenshot"
+\begin{commandline}
+	\begin{verbatim}
+		$ chmod +x hello.py
+		$ ./hello.py
+
+		Hello World!S
+	\end{verbatim}
+\end{commandline}
+
+
+% Warning text, with a custom title
+\begin{warn}[Notice:]
+  Warungen könnten auch nützlich sein, immerhin braucht der RF24 3.3V und nicht 5V
+\end{warn}
+
+%----------------------------------------------------------------------------------------
+%	Beispiel für ein Bild.
+%----------------------------------------------------------------------------------------
+
+\begin{figure}[h]
+	\includegraphics[width=8cm]{fish.png}
+	\centering
+\end{figure}
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\bibliographystyle{unsrt}
+
+\bibliography{sample.bib}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
