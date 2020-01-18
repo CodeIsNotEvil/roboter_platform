@@ -19,16 +19,16 @@ void Steuerung::applyPWMValuesDependingOnReadings() {
         (left -> PWMValue) = this -> yValue;
         (right -> PWMValue) = (this -> yValue) - (this -> xValue);
         if ((this -> xValue) >= (this -> yValue)) {
-          (left -> PWMValue) = 255;
-          (right -> PWMValue) = -255;
+          (left -> PWMValue) = left -> highestValue;
+          (right -> PWMValue) = right -> lowestValue;
         }
       } else {
         //+y , -x
         (left -> PWMValue) = this -> yValue;
         (right -> PWMValue) = (this -> yValue) + (this -> xValue);
         if (abs(this -> xValue) >= (this -> yValue)) {
-          (left -> PWMValue) = -255;
-          (right -> PWMValue) = 255;
+          (left -> PWMValue) = left -> lowestValue;
+          (right -> PWMValue) = right -> highestValue;
         }
       }
     } else {
@@ -37,16 +37,16 @@ void Steuerung::applyPWMValuesDependingOnReadings() {
         (left -> PWMValue) = this -> yValue;
         (right -> PWMValue) = (this -> yValue) + (this -> xValue);
         if (this -> xValue >= abs(this -> yValue)) {
-          (left -> PWMValue) = 255;
-          (right -> PWMValue) = -255;
+          (left -> PWMValue) = left -> highestValue;
+          (right -> PWMValue) = right -> lowestValue;
         }
       } else {
         //-y , -x
         (left -> PWMValue) = this -> yValue;
         (right -> PWMValue) = (this -> yValue) - (this -> xValue);
         if (abs(this -> xValue) >= abs(this -> yValue)) {
-          (left -> PWMValue) = -255;
-          (right -> PWMValue) = 255;
+          (left -> PWMValue) = left -> lowestValue;
+          (right -> PWMValue) = right -> highestValue;
         }
       }
     }
