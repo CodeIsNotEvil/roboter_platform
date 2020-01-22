@@ -1,45 +1,49 @@
 #include <OneWire.h>
 
-#define trig PD3
-#define echo PD4
+#define trig 3
+#define echo 4
 
 long distance = 0;
+long echotime;
+long timer = 0;
 int count = 0;
 
-// ISR For Timer
-ISR(TIMER0_COMPA_vect){
-
-  //set count depending on tcnt0 and the prescaler
-  if(count == 96){
-    count = 0;
-    TCNT0 = 0;
-
-    digitalWrite(trig, HIGH);
-    // ... wait for 10 µs ...
-    
-    delayMicroseconds(10);
-    // ... put the trigger down ...
-    digitalWrite(trig, LOW);
-
-    PCICR |= 0b00000100;
-    PCMSK2 |= 0b00010000;
-    
-  } else {
-    count++;
-  }  
-}
 
 //ISR for PCINT20
 ISR(PCINT2_vect) {
-  distance = pulseIn(echo, HIGH);
+  cli();
   
+  distance = pulseIn(echo, HIGH);
   PCICR &= ~0b00000100;
   PCMSK2 &= ~0b00010000;
   delayMicroseconds(10);
+
 }
 
 long calculateDistance(){
   return (long) (((float) distance/ 58.0));
+}
+
+void measureDistance(){
+    Serial.println("Measuring");
+    
+    PORTD |= (1<<trig);
+    //digitalWrite(trig, HIGH);
+    // ... wait for 10 µs ...
+    
+    delayMicroseconds(10);
+    // ... put the trigger down ...
+    //digitalWrite(trig, LOW);
+
+    echotime = millis();
+    
+    PORTD &= ~(1<<trig);
+
+    sei(); 
+    PCICR |= 0b00000100;
+    PCMSK2 |= 0b00010000;
+    
+    
 }
 
 int16_t dallas(int x, byte start){
@@ -70,19 +74,10 @@ int16_t dallas(int x, byte start){
   return result; 
 }
 
-void initS(){
-  
-  TCNT0 = 0; // reset timer
-  TCCR0A |= 0b00000010;
-  TCCR0B |= 0b0000011; //set prescaler to 64 becasue 256 does not work
-  OCR0A = 255;
-  TIMSK0 |= 0b00000010;
-  sei();  
-}
-
 void setup(){
   Serial.begin(9600);
   dallas(2, 1);
+  timer = millis();
 
   // Initializing Trigger Output and Echo Input
    pinMode(trig, OUTPUT);
@@ -92,16 +87,20 @@ void setup(){
    digitalWrite(trig, LOW);
    delayMicroseconds(500);
 
-   initS();
+   sei();  
 }
 
 void loop(){
-
+  
   long run_time = micros();
-
+  if(millis() - timer >= 100){
+    measureDistance();
+    timer = millis();
+  } 
+  
   Serial.print("Temperatur: ");
   Serial.println(dallas(2, 0));
-
+  
   Serial.print("Distanz: ");
   Serial.print(calculateDistance());
   Serial.println("cm");
