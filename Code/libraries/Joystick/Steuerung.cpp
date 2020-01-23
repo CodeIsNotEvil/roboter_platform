@@ -12,51 +12,55 @@ void Steuerung::mapReadingsToMatchPWMValues() {
 }
 
 void Steuerung::applyPWMValuesDependingOnReadings() {
-  if ((abs(this -> xValue) > (joystick -> spaceing)) || (abs(this -> yValue) > (joystick -> spaceing))) {
+  //TODO faktor für die Bedinungen um die abweichung von left zu right auszugleichen
+  //float leftFaktor = (left -> highestValue) / 255
+  // 
+  //vorher aber testen ob nur die this -> vor left und right vergessen wurde.
+  if ((abs(this -> xValue) > (this -> joystick -> spaceing)) || (abs(this -> yValue) > (this -> joystick -> spaceing))) {
     if (this -> yValue >= 0) {
       if (this -> xValue >= 0) {
         //+y , +x
-        (left -> PWMValue) = this -> yValue;
-        (right -> PWMValue) = (this -> yValue) - (this -> xValue);
+        (this -> left -> PWMValue) = this -> yValue;
+        (this -> right -> PWMValue) = (this -> yValue) - (this -> xValue);
         if ((this -> xValue) >= (this -> yValue)) {
-          (left -> PWMValue) = left -> highestValue;
-          (right -> PWMValue) = right -> lowestValue;
+          (this -> left -> PWMValue) = this -> left -> highestValue;
+          (this -> right -> PWMValue) = this -> right -> lowestValue;
         }
       } else {
         //+y , -x
-        (left -> PWMValue) = this -> yValue;
-        (right -> PWMValue) = (this -> yValue) + (this -> xValue);
+        (this -> left -> PWMValue) = this -> yValue;
+        (this -> right -> PWMValue) = (this -> yValue) + (this -> xValue);
         if (abs(this -> xValue) >= (this -> yValue)) {
-          (left -> PWMValue) = left -> lowestValue;
-          (right -> PWMValue) = right -> highestValue;
+          (this -> left -> PWMValue) = this -> left -> lowestValue;
+          (this -> right -> PWMValue) = this -> right -> highestValue;
         }
       }
     } else {
       if (this -> xValue >= 0) {
         //-y , +x
-        (left -> PWMValue) = this -> yValue;
-        (right -> PWMValue) = (this -> yValue) + (this -> xValue);
+        (this -> left -> PWMValue) = this -> yValue;
+        (this -> right -> PWMValue) = (this -> yValue) + (this -> xValue);
         if (this -> xValue >= abs(this -> yValue)) {
-          (left -> PWMValue) = left -> highestValue;
-          (right -> PWMValue) = right -> lowestValue;
+          (this -> left -> PWMValue) = this -> left -> highestValue;
+          (this -> right -> PWMValue) = this -> right -> lowestValue;
         }
       } else {
         //-y , -x
-        (left -> PWMValue) = this -> yValue;
-        (right -> PWMValue) = (this -> yValue) - (this -> xValue);
+        (this -> left -> PWMValue) = this -> yValue;
+        (this -> right -> PWMValue) = (this -> yValue) - (this -> xValue);
         if (abs(this -> xValue) >= abs(this -> yValue)) {
-          (left -> PWMValue) = left -> lowestValue;
-          (right -> PWMValue) = right -> highestValue;
+          (this -> left -> PWMValue) = this -> left -> lowestValue;
+          (this -> right -> PWMValue) = this -> right -> highestValue;
         }
       }
     }
-    if (abs(this -> xValue) < (joystick -> spaceing)) {
-      (left -> PWMValue) = this -> yValue;
-      (right -> PWMValue) = this -> yValue;
+    if (abs(this -> xValue) < (this -> joystick -> spaceing)) {
+      (this -> left -> PWMValue) = this -> yValue;
+      (this -> right -> PWMValue) = this -> yValue;
     }
   } else {
-    (left -> PWMValue) = 0;
-    (right -> PWMValue) = 0;
+    (this -> left -> PWMValue) = 0;
+    (this -> right -> PWMValue) = 0;
   }
 
 }
