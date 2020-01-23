@@ -1,4 +1,3 @@
-//template
 #include <PCD8544_SPI.h>
 #include <shiftRegButtonLib.h>
 #include <myInterrupts.h>
@@ -34,9 +33,7 @@ bool forwardA = true;
 bool forwardB = true;
 bool driveOn = false;
 uint16_t driveTimeout = 0;
-//#define highByte(x) ( (x) >> (8) ) // keep upper 8 bits
-//#define lowByte(x) ( (x) & (0xff) ) // keep lower 8 bits
-
+//Funk
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
@@ -46,7 +43,7 @@ RF24 radio(A2, A3); // CE, CSN
 const byte address[6] = "00001";
 
 uint8_t commands[32];
-
+/*
 const String mainMenu[] = {
   "fahren",                   //0
   "stoppen",               //1
@@ -65,4 +62,4 @@ const String subMenuEntry0[] = {
   "Speed A",
   "Speed B",
   "Starten"  
-};
+}; */
