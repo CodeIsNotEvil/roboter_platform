@@ -1,0 +1,32 @@
+#######################################
+# Syntax Coloring Map For NanoGame
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+myInterrupts	KEYWORD1
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+myInterrupts		KEYWORD2
+initTimer1		KEYWORD2
+disableTimer1Interrupt	KEYWORD2
+enableTimer1Interrupt	KEYWORD2
+
+initTimer2		KEYWORD2
+disableTimer2Interrupt	KEYWORD2
+enableTimer2Interrupt	KEYWORD2
+initOCR1B		KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+#shiftDatPin		LITERAL1
+
