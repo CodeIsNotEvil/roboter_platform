@@ -1,0 +1,50 @@
+#######################################
+# Syntax Coloring Map For shiftRegButtonLib
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+shiftRegButton	KEYWORD1
+shiftRegButtonLib	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+#shiftRegButton		KEYWORD2
+checkButtons		KEYWORD2
+checkButton		KEYWORD2
+checkButtonCycle	KEYWORD2
+clearButton		KEYWORD2
+clearAllButtons		KEYWORD2
+getButtonCycle		KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+shiftDatPin		LITERAL1
+shiftClkPin		LITERAL1
+shiftInPin		LITERAL1
+shiftDatPORT		LITERAL1
+shiftDatDDR		LITERAL1
+shiftClkPORT		LITERAL1
+shiftClkDDR		LITERAL1
+shiftInPORT		LITERAL1
+shiftInDDR		LITERAL1
+
+buttonUp 		LITERAL1
+buttonLeft 		LITERAL1
+buttonRight 		LITERAL1
+buttonDown 		LITERAL1
+
+buttonL1 		LITERAL1
+buttonStart 		LITERAL1
+buttonSelect 		LITERAL1
+buttonR1 		LITERAL1
+
+buttonA 		LITERAL1
+buttonB 		LITERAL1
+buttonC 		LITERAL1
