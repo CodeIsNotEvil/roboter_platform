@@ -1,4 +1,4 @@
-/*void manualDigitalDrive() {
+void manualDigitalDrive() {
   bool goOn = false;
  // while(!tasten.getButtonCycle(buttonL1)) {
     clearCommands();
@@ -50,4 +50,4 @@
       }
   //  }
   //  tasten.clearAllButtons();
-}*/
+}

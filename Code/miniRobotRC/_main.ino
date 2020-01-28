@@ -19,9 +19,9 @@ void setup() {
 
 void loop() {
   //lcdMenu();
-  /*while(!tasten.getButtonCycle(buttonStart)) {
+  while(!tasten.getButtonCycle(buttonStart)) {
     manualDigitalDrive();
-  } */
+  } 
   tasten.clearButton(buttonStart);
   while(!tasten.getButtonCycle(buttonStart)){
     motorMapping();

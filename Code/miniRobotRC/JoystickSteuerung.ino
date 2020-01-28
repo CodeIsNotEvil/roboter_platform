@@ -3,10 +3,10 @@
 
 Joystick *joystick;
 const uint16_t xAxisPin = 5;
-const uint16_t yAxisPin = 4;
+const uint16_t yAxisPin = 6;
 const int16_t lowestJoystickValue = 0;
 const int16_t highestJoystickValue = 511;
-const int16_t spaceing = 50;
+const int16_t spaceing = 60;
 
 //Informationen linker Motor
 Motor *left;
@@ -31,18 +31,27 @@ void joystickInit() {
   }
 
   void joystickSteuerung() {
+    
     //Only updates if joystick is moved
     steuerung -> updateValues();
-
-    //DEBUG
-    Serial.print("Left motor PWMValue: ");
-    Serial.println(left -> PWMValue);
-    Serial.print("Right motor PWMValue: ");
-    Serial.println(right -> PWMValue);
+    
+    //Show Values On LCD
+    showValuesOnLCD();
     
     //SendValues
     send();
   }
+
+  void showValuesOnLCD(){
+    lcd.clear();
+    lcd.print("WithLib");
+    lcd.gotoXY(0,2);
+    lcd.print("LeftPWM: ");
+    lcd.print(left -> PWMValue);
+    lcd.gotoXY(0,4);
+    lcd.print("RightPWM: ");
+    lcd.print(right -> PWMValue);
+    }
 
   void send(){
         commands[0] = speedA;

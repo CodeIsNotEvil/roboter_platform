@@ -8,7 +8,7 @@ Steuerung::Steuerung(Joystick* joystick, Motor* left, Motor* right) {
 
 void Steuerung::mapReadingsToMatchPWMValues() {
   (this -> xValue) = map(joystick -> xAxisReading, joystick -> lowestValue, joystick -> highestValue, left -> lowestValue, left -> highestValue);
-  (this -> yValue) = map(joystick -> yAxisReading, joystick -> lowestValue, joystick -> highestValue, right -> highestValue, right -> lowestValue);
+  (this -> yValue) = map(joystick -> yAxisReading, joystick -> lowestValue, joystick -> highestValue, right -> lowestValue, right -> highestValue);
 }
 
 void Steuerung::applyPWMValuesDependingOnReadings() {
