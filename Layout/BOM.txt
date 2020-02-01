@@ -1,0 +1,42 @@
+Pos.		Bezeichnung/Bauform			Wert			Menge
+
+elektrische Komponenten:
+
+1		MPU-6050 Gyroskopsensormodul		-			1
+2		Arduino Nano				Atmega328p		1
+3		Funkmodul NRF24L01			-			2
+4		Federkontaktklemmen			4pol.			1
+5		Motortreiber MX1508			-			1
+6		Schottky-Diode				100V/5A			1
+7		JST Steckerbuchse			2pol.			1
+8		Schalter				1pol. / Schließer	1
+9		Keramikkondensator			50V/100nF		6
+10		Keramikkondensator			25V/10µF		3
+11		Keramikkondensator			6,3V/100µF		1
+12		Elektrolytkondensator			10V/470µF		3
+13		Brücken/1206				0 Ohm			2
+14		Widerstand/0603				10kOhm			3
+15		AMS1117-3.3				3,3V LDO		1
+16		Widerstand/0603				4,7kOhm			1
+17		Steckerleiste				1x5			3
+18		Steckerleiste				1x4			3
+19		Buchsenleiste				2x4			1
+20		Joystick Modul				-			1
+21		HC-SR04					Ultraschallsensor	1
+22		DC Getriebemotor, Mabuchi N20		12V, 300RPM		2
+23		Temperatursensor DS1820			-			1
+
+mechanische Komponenten:
+
+1		Zylinderkopfschraube			M3x8			10
+2		Zylinderkopfschraube			M3x20			4
+3		Zylinderkopfschraube			M3x25			2
+4		Messinggewindebuchsen			M3x5x4			16
+5		Räder					PLA, gedruckt		2
+6		Plattform				PLA, gedruckt		1
+7		Motorhalterung				PLA, gedruckt		2
+8		Akkuhalterung				PLA, gedruckt		1
+9		HC-SR04 Halterung			PLA, gedruckt		1
+10		Gummiband				-			2
+11		Silikonkabel rot			flexibel, 0,25mm²	50cm
+12		Silikonkabel schwarz			flexibel, 0,25mm²	30cm
