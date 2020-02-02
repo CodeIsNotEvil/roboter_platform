@@ -15,6 +15,9 @@ volatile PCD8544_SPI_FB lcd;
 volatile myInterrupts Timer2;
 volatile myInterrupts pwmBL;
 volatile shiftRegButton tasten;
+//LCD
+uint8_t renderTime = 0;
+#define renderTimeout 100
 
 //Kommandos
 #define nothing 9 //reset/nichts tun
