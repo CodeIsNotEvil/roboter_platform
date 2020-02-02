@@ -30,6 +30,8 @@ const byte address[6] = "00001";
 #define stopDrive 6 //stop
 #define getTemp 7 //get temperature
 #define timeToDrive 8 //Zeitdauer des fahrens
+#define distance 10 //Abstand zu Objekten
+
 //Motortreiber
 //#include <MX1508.h>
 #include <L298N.h>

@@ -26,6 +26,7 @@ volatile shiftRegButton tasten;
 #define stopDrive 6 //stop
 #define getTemp 7 //get temperature
 #define timeToDrive 8 //Zeitdauer des fahrens
+#define getDistance 10 //Abstand zu Objekten
 
 int pwmA = 0;
 int pwmB = 0;

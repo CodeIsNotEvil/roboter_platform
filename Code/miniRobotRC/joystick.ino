@@ -62,6 +62,7 @@ void senden() {
         commands[7] = highByte(driveTimeout);
         commands[8] = lowByte(driveTimeout);
         commands[9] = goDrive;
+		    commands[10] = getDistance;
         radio.write(&commands, sizeof(commands));
 }
 
