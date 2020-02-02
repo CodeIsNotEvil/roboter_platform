@@ -11,7 +11,7 @@
 #define _OE_LEVEL 7   //D7 fuer Output Enable Pegelwandler
 #define BRIGHTNESS OCR1B
 //globale Objekte anlegen
-volatile PCD8544_SPI lcd;
+volatile PCD8544_SPI_FB lcd;
 volatile myInterrupts Timer2;
 volatile myInterrupts pwmBL;
 volatile shiftRegButton tasten;
