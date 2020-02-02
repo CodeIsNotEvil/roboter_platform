@@ -64,5 +64,11 @@ void joystickInit() {
         commands[7] = highByte(driveTimeout);
         commands[8] = lowByte(driveTimeout);
         commands[9] = goDrive;
+        commands[10] = getTemp;
+        commands[11] = highByte(temperature);
+        commands[12] = lowByte(temperature);
+        commands[13] = getTemp;
+        commands[14] = highByte(distance);
+        commands[15] = lowByte(distance);
         radio.write(&commands, sizeof(commands));
   }

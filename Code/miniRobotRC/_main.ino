@@ -3,8 +3,6 @@
 #include <Arduino.h>
 
 long timer;
-int distance;
-int temperature;
 
 void inline clearCommands() {
   for(uint8_t i=0; i<32; i++) {

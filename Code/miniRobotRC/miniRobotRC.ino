@@ -34,6 +34,10 @@ bool forwardA = true;
 bool forwardB = true;
 bool driveOn = false;
 uint16_t driveTimeout = 0;
+
+int distance;
+int temperature;
+
 //Funk
 #include <SPI.h>
 #include <nRF24L01.h>
