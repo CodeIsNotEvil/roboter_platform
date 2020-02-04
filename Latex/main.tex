@@ -54,13 +54,39 @@
     \cite{nanoGame} welcher als Fernsteuerung verwendet wird. 
     \paragraph{Ziel des Projektes}	
 	Ziel des Projektes ist eine ferngesteuerte, OpenSource basierende Roboterplatform.
+
+\newpage    
+\section{SPI}%Lukas
+
 \newpage
 \section{Funksteuereung} %Lukas
     Wie schon zuvor erwähnt wird für die Basis der Funksteuerung das Arduino Shield verwendet, welches mit einem RF24 Chip erweitert wurde.
     \subsection{RF24} %Oder nur als paragraph je nachdem wie viel zusammen kommt.
-
-\newpage    
-\section{SPI}
+       Die Open Soucre Libarie RF24 \cite{RF24_Lib} diente als Codebasis für die Funksteuerung. Da diese Libarie bei korrekter Verwendung genau auf die Kommunikation zwischen zwei nRF24L01 Chips abgestimmt ist.
+       Zur verwendung der Libarie muss sie nur includiert und Instanziiert werden dabei werden die Beiden Pins CE und CSN für das Hardware-SPI konfiguriert.
+       
+       \begin{file}[RF24 initialisieren]
+        \begin{lstlisting}[language=C]
+            #include <RF24.h>
+            RF24 radio(A2, A3); // CE, CSN
+        \end{lstlisting}
+        \end{file}
+        
+        Damit sind bereits Sämtliche Konfigurationen für die Hardware-SPI Kommunikation zwischen Arduino nano und dem nRF24L01 erledigt.
+        Kommunizieren zwischen zwei dieser Setups wird dann durch die Funktionen read und wirite 
+       \begin{file}[RF24 initialisieren]
+        \begin{lstlisting}[language=C]
+            //An der Sender Seite
+            radio.write(&payload, sizeof(payload));
+            
+            //An der Empfaenger Seite
+            if (radio.available()) {
+                radio.read(&payload, sizeof(payload));
+                //Payload weiter verarbeiten.
+            }
+        \end{lstlisting}
+        \end{file} 
+        
     
 \newpage
 \section{Arduino Libaries} %Lukas
