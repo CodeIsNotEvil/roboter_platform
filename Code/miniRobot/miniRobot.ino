@@ -37,14 +37,14 @@ const byte address[6] = "00001";
 #include <L298N.h>
 
 #define BEEP 14
-
+/*
 #define PWM_PINA 10
 #define PINA 8
 #define PWM_PINB 9
 #define PINB 7
 #define NUMPWM 1
 
-#define RESOLUTION 255
+#define RESOLUTION 255 */
 
 //MX1508 motorA(PWM_PINA,PINA, FAST_DECAY, NUMPWM);
 //MX1508 motorB(PWM_PINB,PINB, FAST_DECAY, NUMPWM);
