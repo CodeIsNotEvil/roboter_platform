@@ -12,6 +12,7 @@
 RF24 radio(A0, 3); // CE, CSN
 
 byte commands[32];       //byte 0 = command
+long timer;
 
 void inline clearCommands() {
   for(uint8_t i=0; i<32; i++) {
@@ -72,6 +73,11 @@ void setup() {
   radio.setPALevel(RF24_PA_MAX);
   radio.startListening();
   clearCommands();
+  
+  //Temperatur- und Abstandsmessung
+  tempDistSetup();
+  setEchoPins(0, 0); //Setze die pins für den Abstandsensor aus denen gelesenw erden soll das erster ist der Trigger-, das zweite der Echopin
+  timer = millis(); 
 }
 
 void loop() {
@@ -86,6 +92,17 @@ void loop() {
   }
     drive.setPWM_A(pwmA);
     drive.setPWM_B(pwmB);
+	
+  //Temperatur- und Abstandsmessung
+  
+  temperature = dallas(4, 0);
+  
+  if(millis() - timer >= 100){
+	measureDistance();
+	timer = millis();  
+  }
+  
+  distance = calculateDistance();
 }
 
 void commandInterpretation() {
