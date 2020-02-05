@@ -47,13 +47,13 @@
 
 \section{Vorwort} % Unnumbered section
     \paragraph{Motivation}
-    Eine Platform bieten ist etwas was momentan sehr stark im Trend liegt, sei es im Software oder im Hardware bereich. Im Softwarebereich zeigt sich dies meist durch opensource libaries, welche möglichst varriable einsetzbaren Code für jeden frei zugänglich machen. \\    
+    Eine Platform bieten ist etwas was momentan sehr stark im Trend liegt, sei es im Software oder im Hardware Bereich. Im Softwarebereich zeigt sich dies meist durch opensource Bibliotheken, welche möglichst variable einsetzbaren Code für jeden frei zugänglich machen. \\    
     Ein solches Projekt war auch von einem der Projektmitglieder (Yves Ehrlich) als Privates Projekt geplant und so kahm die Überlegung dies innerhalb des Modules Embedded Networking zu wählen.\linebreak
     \paragraph{Basis des Projektes}
     Als Basis des Projektes dient einer schon bereits von Yves Ehrlich angefertigter Arduino Nano Shield samt Code,
     \cite{nanoGame} welcher als Fernsteuerung verwendet wird. 
     \paragraph{Ziel des Projektes}	
-	Ziel des Projektes ist eine ferngesteuerte, OpenSource basierende Roboterplatform.
+	Ziel des Projektes ist eine ferngesteuerte, Opensource basierende Roboterplattform.
 
 \newpage    
 \section{SPI}%Lukas
@@ -62,27 +62,29 @@
 \section{Funksteuereung} %Lukas
     Wie schon zuvor erwähnt wird für die Basis der Funksteuerung das Arduino Shield verwendet, welches mit einem RF24 Chip erweitert wurde.
     \subsection{RF24} %Oder nur als paragraph je nachdem wie viel zusammen kommt.
-       Die Open Soucre Libarie RF24 \cite{RF24_Lib} diente als Codebasis für die Funksteuerung. Da diese Libarie bei korrekter Verwendung genau auf die Kommunikation zwischen zwei nRF24L01 Chips abgestimmt ist.
-       Zur verwendung der Libarie muss sie nur includiert und Instanziiert werden dabei werden die Beiden Pins CE und CSN für das Hardware-SPI konfiguriert.
+       Die Opensoucre Bibliothek RF24 \cite{RF24_Lib} diente als Codebasis für die Funksteuerung. Da diese Bibliothek bei korrekter Verwendung genau auf die Kommunikation zwischen zwei nRF24L01 Chips abgestimmt ist.
+       Zur Verwendung der Bibliothek muss sie nur inkludiert und Instanziiert werden dabei werden die Beiden Pins CE und CSN für das Hardware-SPI konfiguriert.
        
        \begin{file}[RF24 initialisieren]
-        \begin{lstlisting}[language=C]
+        \begin{lstlisting}[language=C++]
             #include <RF24.h>
             RF24 radio(A2, A3); // CE, CSN
         \end{lstlisting}
         \end{file}
         
         Damit sind bereits Sämtliche Konfigurationen für die Hardware-SPI Kommunikation zwischen Arduino nano und dem nRF24L01 erledigt.
-        Kommunizieren zwischen zwei dieser Setups wird dann durch die Funktionen read und wirite 
+        Kommunizieren zwischen zwei dieser Setups wird dann durch die Funktionen read und wirite, jedoch muss vor dem Start einer Kommunikation die Methode begin() aufgerufen werden.
        \begin{file}[RF24 initialisieren]
-        \begin{lstlisting}[language=C]
+        \begin{lstlisting}[language=C++]
             //An der Sender Seite
+            radio.begin();
             radio.write(&payload, sizeof(payload));
             
             //An der Empfaenger Seite
+            radio.begin();
             if (radio.available()) {
-                radio.read(&payload, sizeof(payload));
-                //Payload weiter verarbeiten.
+              radio.read(&payload, sizeof(payload));
+              //Payload weiter verarbeiten.
             }
         \end{lstlisting}
         \end{file} 
