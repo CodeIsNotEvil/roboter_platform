@@ -41,7 +41,6 @@ void measureDistance(){
     
     delayMicroseconds(10);
     // ... put the trigger down ...
-    distance = 600;
 
     PORTD &= ~(1<<trig); 
     PCICR |= 0b00000100;

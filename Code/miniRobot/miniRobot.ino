@@ -13,6 +13,8 @@ RF24 radio(A0, 3); // CE, CSN
 
 byte commands[32];       //byte 0 = command
 long timer;
+int temperature;
+int distance = 0;
 
 void inline clearCommands() {
   for(uint8_t i=0; i<32; i++) {
@@ -31,7 +33,7 @@ const byte address[6] = "00001";
 #define stopDrive 6 //stop
 #define getTemp 7 //get temperature
 #define timeToDrive 8 //Zeitdauer des fahrens
-#define distance 10 //Abstand zu Objekten
+#define getDistance 10 //Abstand zu Objekten
 
 //Motortreiber
 //#include <MX1508.h>
@@ -148,8 +150,9 @@ void commandInterpretation() {
                       break;
       }
       case getTemp :  {
-                      temperatur = (0xFF00 & (commands[i+1] << 8));
-                      temperatur |= (0x00FF & commands[i+2]);   
+                      int temp5;
+                      temp5 = (0xFF00 & (commands[i+1] << 8));
+                      temp5 |= (0x00FF & commands[i+2]);   
                       break;
       }
       case timeToDrive : {
