@@ -211,7 +211,7 @@ Da das Array eine feste Größe von 32 Byte hat, lassen sich folglich bis zu 10 
         \end{file}
         
         Damit sind bereits Sämtliche Konfigurationen für die Hardware-SPI Kommunikation zwischen Arduino nano und dem nRF24L01 erledigt.
-        Kommunizieren zwischen zwei dieser Setups wird dann durch die Funktionen read und wirite, jedoch muss vor dem Start einer Kommunikation die Methode begin() aufgerufen werden.
+        Kommunizieren zwischen zwei dieser Setups wird dann durch die Funktionen read und write, jedoch muss vor dem Start einer Kommunikation die Methode begin() aufgerufen werden.
        \begin{file}[RF24 initialisieren]
         \begin{lstlisting}[language=C++]
             //An der Sender Seite
@@ -243,7 +243,9 @@ Da das Array eine feste Größe von 32 Byte hat, lassen sich folglich bis zu 10 
 %Folgende beiden ließen sich auch durch subsections mittels sensoric als section realisieren, kommt aber auf die menge des textes an subsections sollten nicht über eine halbe seite lang sein.
 \newpage
 \section{Thermosensor} %Nick
-
+	Wie bereits erwähnt benutzen wir einen Dallas DS1820  1-Wire Digital Thermometer, um die Motortemperatur zu messen. Der DS1820 speichert die Temperatur als einen 9bit Wert und kann Temperaturen im Bereich von -55°C bis 125°C messen. Für unsere Bedürfnisse reicht es wenn wir in 1-er Schritten messen. Der Sensor kommt aber auch mit halben Graden zu recht. 
+	
+	Eine Messung wird durchgeführt indem der Sensor Takte, innerhalb eines Zeitfensters zählt. Der Zähler startet bei einem Wert, der -55°C darstellt. Erreicht der Zähler 0 schneller als das vorgegebene Zeitfenster wird das Temperaturregister inkrementiert. Der Zähler wird auf einen vom Slope Accumulator Circuitry abhängigen wert gestellt und wieder runtergezählt. Dies wiederholt sich solange bis das festgelegte Zeitfenster abgelaufen ist. 
 \newpage
 \section{Ultraschallsensor} %Nick
 
