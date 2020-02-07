@@ -10,28 +10,8 @@ volatile int16_t yValue = 0;
 volatile int16_t leftPWM = 0;
 volatile int16_t rightPWM = 0;
 
-const int16_t deadZone = 10;
-/*
-void setup() {
-  Serial.begin(115200);
-}
+const int16_t deadZone = 40;
 
-void loop() {
-  koordinaten(analogRead(xPin), analogRead(yPin));
-  motorPWM();
-  Serial.print("X: ");
-  Serial.println(xValue);
-  Serial.print("Y: ");
-  Serial.println(yValue);
-  Serial.print("links: ");
-  Serial.println(leftPWM);
-  Serial.print("rechts: ");
-  Serial.println(rightPWM);
-
-  delay(200);
-
-}
-*/
 void motorMapping() {
   static long temp = millis();
   koordinaten(analogRead(xPin), analogRead(yPin));
@@ -40,12 +20,14 @@ void motorMapping() {
   pwmB = map(leftPWM, -255,255,leftMin,leftMax);
   pwmA = map(rightPWM, -255,255,rightMin,rightMax);
   if((millis() - temp) > 100) {
-    lcd.clear();
-    lcd.println("Links: ");
-    lcd.println(pwmB);
-    lcd.gotoXY(0,2);
-    lcd.println("Rechts: ");
-    lcd.println(pwmA);
+ //   lcd.clear();
+ //   lcd.println("Links: ");
+    lcdLines[0] = "Links: " + String(pwmB, DEC);
+ //   lcd.println(pwmB);
+ //   lcd.gotoXY(0,2);
+ //   lcd.println("Rechts: ");
+    lcdLines[0] = "Rechts: " + String(pwmA, DEC);
+ //  lcd.println(pwmA);
   }
 
   senden();

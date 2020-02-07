@@ -4,7 +4,7 @@
 
 #define CLR_BIT(p,n) ((p) &= ~((1) << (n)))
 #define SET_BIT(p,n) ((p) |= (1 << (n)))
-
+//Pinzuordnungen
 #define BL 10         //backlight, Hintergrundbeleuchtung LCD
 #define SD_CARD_CS 2  //D2 ist Chip Enable
 #define BAT_VOLTAGE A7 //Akkuspannung an A7
@@ -17,7 +17,8 @@ volatile myInterrupts pwmBL;
 volatile shiftRegButton tasten;
 //LCD
 uint8_t renderTime = 0;
-#define renderTimeout 100
+#define renderTimeout 100   //es wird alle 100ms gerendert
+String lcdLines[6];         //Strings welche alle 100ms ausgegeben werden
 
 //Kommandos
 #define nothing 9 //reset/nichts tun
@@ -31,15 +32,15 @@ uint8_t renderTime = 0;
 #define timeToDrive 8 //Zeitdauer des fahrens
 #define getDistance 10 //Abstand zu Objekten
 
-int pwmA = 0;
-int pwmB = 0;
+int16_t pwmA = 0;
+int16_t pwmB = 0;
 bool forwardA = true;
 bool forwardB = true;
 bool driveOn = false;
 uint16_t driveTimeout = 0;
 
-int distance;
-int temperature;
+int16_t distance;
+int16_t temperature;
 
 //Funk
 #include <SPI.h>
@@ -51,23 +52,3 @@ RF24 radio(A2, A3); // CE, CSN
 const byte address[6] = "00001";
 
 uint8_t commands[32];
-/*
-const String mainMenu[] = {
-  "fahren",                   //0
-  "stoppen",               //1
-  "manuell fahren",           //2
-  "",            //3
-  "",          //4
-  "",         //5
-  "",          //6
-  "",          //7  
-  "",          //8
-  ""           //9
-};
-
-const String subMenuEntry0[] = {
-  "Zeitdauer",
-  "Speed A",
-  "Speed B",
-  "Starten"  
-}; */
