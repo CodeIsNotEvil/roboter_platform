@@ -42,6 +42,8 @@ uint16_t driveTimeout = 0;
 int16_t distance;
 int16_t temperature = 0;
 
+int16_t temp_time = millis();
+
 //Funk
 #include <SPI.h>
 #include <nRF24L01.h>
@@ -50,5 +52,6 @@ int16_t temperature = 0;
 RF24 radio(A2, A3); // CE, CSN
 
 const byte address[6] = "00001";
+const byte address2[6] = "00002";
 
 uint8_t commands[32];

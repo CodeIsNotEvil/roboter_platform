@@ -1,4 +1,5 @@
 void manualDigitalDrive() {
+
   bool goOn = false;
   String temp_str = "T: " + String(temperature) + " Grad C";
   lcdLines[5] = temp_str;
@@ -48,6 +49,30 @@ void manualDigitalDrive() {
         radio.write(&commands, sizeof(commands));
         goOn = false;
       }
+
+    //Temperatur <3
+    
+    if((millis() - temp_time) >= 5000){ // jede  Sekunden
+      temp_time = millis();
+      bool err = false;
+      clearCommands();
+      commands[0] = getTemp;
+      radio.write(&commands, sizeof(commands) && !err);
+      long start = micros();
+      radio.startListening();
+      while(!radio.available()){
+        //Serial.println("nix");
+        if((micros()- start) >= 1){
+        
+          err = true;
+        }
+      }
+      if(!err){
+        radio.read(&temperature, sizeof(int16_t));
+      }
+      radio.stopListening();
+    }
+    
   //  }
   //  tasten.clearAllButtons();
 }

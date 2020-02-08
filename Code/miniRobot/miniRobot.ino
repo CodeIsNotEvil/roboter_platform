@@ -23,6 +23,7 @@ void inline clearCommands() {
 }
 
 const byte address[6] = "00001";
+const byte address2[6] = "00002";
 //Kommandos
 #define nothing 9 //reset/nichts tun
 #define speedA 1 // set speed A + speed
@@ -60,7 +61,7 @@ bool forwardA = true;
 bool forwardB = true;
 volatile bool driveOn = false;
 
-int temperatur = 0;
+int16_t temperatur = 0;
 
 
 volatile long driveTimeout = 0;
@@ -71,6 +72,7 @@ void setup() {
 //  motorA.setPWM16(2,RESOLUTION);
 //  motorB.setPWM16(2,RESOLUTION);
   radio.begin();
+  radio.openWritingPipe(address2);
   radio.openReadingPipe(0, address);
   radio.setPALevel(RF24_PA_MAX);
   radio.startListening();
@@ -83,6 +85,7 @@ void setup() {
 }
 
 void loop() {
+  Serial.println(temperature);
   if (radio.available()) {
     radio.read(&commands, sizeof(commands));
     commandInterpretation();
@@ -92,16 +95,18 @@ void loop() {
     pwmA = 0;
     pwmB = 0;
   }
+
     drive.setPWM_A(pwmA);
     drive.setPWM_B(pwmB);
-	
+    
+
   //Temperatur- und Abstandsmessung
   
   temperature = dallas(4, 0);
   
   if(millis() - timer >= 100){
-  	measureDistance();
-  	timer = millis();  
+    measureDistance();
+    timer = millis();  
   }
   
   distance = calculateDistance();
@@ -150,8 +155,10 @@ void commandInterpretation() {
                       break;
       }
       case getTemp :  {                     
-                        
-                      radio.write(&temperature, sizeof(temperature));
+                      Serial.println("Senden!");
+                      radio.stopListening();                    
+                      radio.write(&temperature, sizeof(int16_t));
+                      radio.startListening();
                       break;
       }
       case timeToDrive : {
