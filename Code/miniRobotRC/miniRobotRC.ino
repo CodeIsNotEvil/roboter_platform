@@ -39,8 +39,8 @@ bool forwardB = true;
 bool driveOn = false;
 uint16_t driveTimeout = 0;
 
-int16_t distance;
-int16_t temperature = 0;
+uint8_t distance;
+uint8_t temperature = 0;
 
 unsigned long temp_time = millis();
 

@@ -12,9 +12,9 @@
 RF24 radio(A0, 3); // CE, CSN
 
 byte commands[32];       //byte 0 = command
-long timer;
+unsigned long timer;
 int16_t temperature = 0;
-int16_t distance = 0;
+uint16_t distance = 50;
 
 void inline clearCommands() {
   for(uint8_t i=0; i<32; i++) {
@@ -70,30 +70,36 @@ void setup() {
 //  motorB.setPWM16(2,RESOLUTION);
   radio.begin();
   radio.openWritingPipe(address2);
-  radio.openReadingPipe(0, address);
+  radio.openReadingPipe(1, address);
   radio.setPALevel(RF24_PA_MAX);
   radio.startListening();
   clearCommands();
   
   //Temperatur- und Abstandsmessung
   
-  setEchoPins(16, 6); //16: A2, 5: D5
+  setEchoPins(16, 6); //16: A2, 6: D6
   tempDistSetup();
   timer = millis(); 
 }
 
 void loop() {
   //Temperatur- und Abstandsmessung
-  Serial.println(temperature);
-  Serial.println(distance);
-  temperature = dallas(4, 0);
+  //Serial.println(temperature);
+  //Serial.println(distance);
   
-  if((unsigned long)(millis() - timer) >= 100){
+
+  unsigned long currentMillis = millis();
+  
+  if((unsigned long)(currentMillis - timer) >= 100){
+    temperature = dallas(4, 0); 
     measureDistance();
-    timer = millis();  
+    distance = calculateDistance(); 
+    Serial.println(distance);
+    timer = currentMillis;
+    
   }
   
-  distance = calculateDistance();
+  
 
   
   if (radio.available()) {
@@ -108,13 +114,13 @@ void loop() {
 
     
     if(distance < 20){
-    Serial.println("Achtung!");
+    //Serial.println("Achtung!");
     if(pwmA < 0 && pwmB < 0){
         pwmA = 0;
         pwmB = 0;
       }
     }
-
+    
     
     drive.setPWM_A(pwmA);
     drive.setPWM_B(pwmB);
@@ -166,9 +172,10 @@ void commandInterpretation() {
                       break;
       }
       case getTemp :  { 
-                      Serial.println("Senden!");                    
-                      radio.stopListening();                    
-                      radio.write(&temperature, sizeof(int16_t));
+                      //Serial.println("Senden!");                    
+                      radio.stopListening();     
+                      int16_t sendData = temperature;               
+                      radio.write(&sendData, sizeof(int16_t));
                       radio.startListening();
                       break;
       }
