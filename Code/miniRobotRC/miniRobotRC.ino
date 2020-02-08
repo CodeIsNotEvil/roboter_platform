@@ -40,7 +40,7 @@ bool driveOn = false;
 uint16_t driveTimeout = 0;
 
 int16_t distance;
-int16_t temperature;
+int16_t temperature = 0;
 
 //Funk
 #include <SPI.h>

@@ -13,7 +13,7 @@ RF24 radio(A0, 3); // CE, CSN
 
 byte commands[32];       //byte 0 = command
 long timer;
-int temperature;
+int16_t temperature;
 int distance = 0;
 
 void inline clearCommands() {
@@ -78,7 +78,7 @@ void setup() {
   
   //Temperatur- und Abstandsmessung
   tempDistSetup();
-  setEchoPins(0, 0); //Setze die pins für den Abstandsensor aus denen gelesenw erden soll das erster ist der Trigger-, das zweite der Echopin
+  setEchoPins(16, 5); //16: A2, 5: D5
   timer = millis(); 
 }
 
@@ -100,8 +100,8 @@ void loop() {
   temperature = dallas(4, 0);
   
   if(millis() - timer >= 100){
-	measureDistance();
-	timer = millis();  
+  	measureDistance();
+  	timer = millis();  
   }
   
   distance = calculateDistance();
@@ -149,10 +149,9 @@ void commandInterpretation() {
                       driveOn = false;      
                       break;
       }
-      case getTemp :  {
-                      int temp5;
-                      temp5 = (0xFF00 & (commands[i+1] << 8));
-                      temp5 |= (0x00FF & commands[i+2]);   
+      case getTemp :  {                     
+                        
+                      radio.write(&temperature, sizeof(temperature));
                       break;
       }
       case timeToDrive : {
@@ -169,6 +168,7 @@ void commandInterpretation() {
                       forwardA = true;
                       forwardB = true;
                       driveOn = false; */
+                      
                       break; 
       }
     }

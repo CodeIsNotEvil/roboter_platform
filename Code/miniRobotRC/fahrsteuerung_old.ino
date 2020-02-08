@@ -1,9 +1,13 @@
 void manualDigitalDrive() {
   bool goOn = false;
+  String temp_str = "T: " + String(temperature) + " Grad C";
+  lcdLines[5] = temp_str;
  // while(!tasten.getButtonCycle(buttonL1)) {
     clearCommands();
     if(!tasten.getAnyPressed()) {
       lcdLines[0] = "Warte...";
+      
+ 
     }
     if(tasten.checkButton(buttonB) || tasten.checkButton(buttonUp)) {
             pwmA = -215;
@@ -40,6 +44,7 @@ void manualDigitalDrive() {
         commands[7] = highByte(driveTimeout);
         commands[8] = lowByte(driveTimeout);
         commands[9] = goDrive;
+        
         radio.write(&commands, sizeof(commands));
         goOn = false;
       }

@@ -36,13 +36,13 @@ int calculateDistance(){
 
 void measureDistance(){
     
-    PORTD |= (1<<trig);
+     digitalWrite(trig, HIGH);
     // ... wait for 10 µs ...
     
     delayMicroseconds(10);
     // ... put the trigger down ...
 
-    PORTD &= ~(1<<trig); 
+    digitalWrite(trig, LOW); 
     PCICR |= 0b00000100;
     PCMSK2 |= 0b00010000;
     
@@ -62,11 +62,13 @@ int16_t dallas(int x, byte start){
     ds.write(0xBE); //Read 1st 2 bytes of Scratchpad
     result = 0;
     for(i = 0; i < 2; i++){
-      data[i] = ds.read();
-      result += data[i];
+      data[i] = ds.read();    
     }
+    
+    result = (data[1]<<8)|data[0];
 
-    result = result/2;
+    result = result/16; //DS1820 2 DS18B20 16
+    
     ds.reset();
     ds.write(0xCC);
     ds.write(0x44, 1); //start conversion

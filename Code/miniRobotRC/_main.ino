@@ -32,7 +32,6 @@ void loop() {
     joystickSteuerung(); //TODO ()
   }
   tasten.clearButton(buttonStart);
-  
 }
 
 void lcdMenu() {
