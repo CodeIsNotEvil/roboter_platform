@@ -2,8 +2,8 @@
 
 #define maxDistance 400
 
-int trig = 0;
-int echo = 0;
+int trig;
+int echo;
 
 //int distance = 0;
 int distance2 = 0;
@@ -25,8 +25,8 @@ void setEchoPins(int pin1, int pin2){
   echo = pin2;
 }
 
-int calculateDistance(){
-  int result = distance2/ 58;
+int16_t calculateDistance(){
+  int16_t result = distance2/ 58;
 
   if(result > maxDistance){
     result = maxDistance;

@@ -13,8 +13,8 @@ RF24 radio(A0, 3); // CE, CSN
 
 byte commands[32];       //byte 0 = command
 long timer;
-int16_t temperature;
-int distance = 0;
+int16_t temperature = 0;
+int16_t distance = 0;
 
 void inline clearCommands() {
   for(uint8_t i=0; i<32; i++) {
@@ -61,9 +61,6 @@ bool forwardA = true;
 bool forwardB = true;
 volatile bool driveOn = false;
 
-int16_t temperatur = 0;
-
-
 volatile long driveTimeout = 0;
 volatile long driveTimeDiff = 0;
 
@@ -79,13 +76,26 @@ void setup() {
   clearCommands();
   
   //Temperatur- und Abstandsmessung
+  
+  setEchoPins(16, 6); //16: A2, 5: D5
   tempDistSetup();
-  setEchoPins(16, 5); //16: A2, 5: D5
   timer = millis(); 
 }
 
 void loop() {
+  //Temperatur- und Abstandsmessung
   Serial.println(temperature);
+  Serial.println(distance);
+  temperature = dallas(4, 0);
+  
+  if((unsigned long)(millis() - timer) >= 100){
+    measureDistance();
+    timer = millis();  
+  }
+  
+  distance = calculateDistance();
+
+  
   if (radio.available()) {
     radio.read(&commands, sizeof(commands));
     commandInterpretation();
@@ -96,20 +106,21 @@ void loop() {
     pwmB = 0;
   }
 
+    
+    if(distance < 20){
+    Serial.println("Achtung!");
+    if(pwmA < 0 && pwmB < 0){
+        pwmA = 0;
+        pwmB = 0;
+      }
+    }
+
+    
     drive.setPWM_A(pwmA);
     drive.setPWM_B(pwmB);
     
 
-  //Temperatur- und Abstandsmessung
-  
-  temperature = dallas(4, 0);
-  
-  if(millis() - timer >= 100){
-    measureDistance();
-    timer = millis();  
-  }
-  
-  distance = calculateDistance();
+    
 }
 
 void commandInterpretation() {
@@ -154,8 +165,8 @@ void commandInterpretation() {
                       driveOn = false;      
                       break;
       }
-      case getTemp :  {                     
-                      Serial.println("Senden!");
+      case getTemp :  { 
+                      Serial.println("Senden!");                    
                       radio.stopListening();                    
                       radio.write(&temperature, sizeof(int16_t));
                       radio.startListening();
@@ -180,5 +191,6 @@ void commandInterpretation() {
       }
     }
   }
+  
   clearCommands();
 }

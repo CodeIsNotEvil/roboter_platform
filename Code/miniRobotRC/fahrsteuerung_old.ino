@@ -52,17 +52,17 @@ void manualDigitalDrive() {
 
     //Temperatur <3
     
-    if((millis() - temp_time) >= 5000){ // jede  Sekunden
+    if((unsigned long)(millis() - temp_time) >= 1000){ // jede  Sekunden
       temp_time = millis();
       bool err = false;
       clearCommands();
       commands[0] = getTemp;
       radio.write(&commands, sizeof(commands) && !err);
-      long start = micros();
+      unsigned long start = micros();
       radio.startListening();
       while(!radio.available()){
         //Serial.println("nix");
-        if((micros()- start) >= 1){
+        if((unsigned long)(micros()- start) >= 1){
         
           err = true;
         }
