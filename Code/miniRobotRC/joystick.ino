@@ -26,7 +26,7 @@ void motorMapping() {
  //   lcd.println(pwmB);
  //   lcd.gotoXY(0,2);
  //   lcd.println("Rechts: ");
-    lcdLines[0] = "Rechts: " + String(pwmA, DEC);
+    lcdLines[1] = "Rechts: " + String(pwmA, DEC);
  //  lcd.println(pwmA);
   }
 

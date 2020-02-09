@@ -7,8 +7,7 @@ void manualDigitalDrive() {
     clearCommands();
     if(!tasten.getAnyPressed()) {
       lcdLines[0] = "Warte...";
-      
- 
+
     }
     if(tasten.checkButton(buttonB) || tasten.checkButton(buttonUp)) {
             pwmA = -215;

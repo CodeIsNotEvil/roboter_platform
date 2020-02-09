@@ -36,7 +36,6 @@ void loop() {
     updateTemp();
   }
   tasten.clearButton(buttonStart);
-  
 }
 
 void lcdMenu() {
