@@ -12,6 +12,9 @@
 RF24 radio(A0, 3); // CE, CSN
 
 byte commands[32];       //byte 0 = command
+unsigned long timer;
+int16_t temperature = 0;
+uint16_t distance = 50;
 
 void inline clearCommands() {
   for(uint8_t i=0; i<32; i++) {
@@ -20,6 +23,7 @@ void inline clearCommands() {
 }
 
 const byte address[6] = "00001";
+const byte address2[6] = "00002";
 //Kommandos
 #define nothing 9 //reset/nichts tun
 #define speedA 1 // set speed A + speed
@@ -30,7 +34,7 @@ const byte address[6] = "00001";
 #define stopDrive 6 //stop
 #define getTemp 7 //get temperature
 #define timeToDrive 8 //Zeitdauer des fahrens
-#define distance 10 //Abstand zu Objekten
+#define getDistance 10 //Abstand zu Objekten
 
 //Motortreiber
 //#include <MX1508.h>
@@ -57,9 +61,6 @@ bool forwardA = true;
 bool forwardB = true;
 volatile bool driveOn = false;
 
-int temperatur = 0;
-
-
 volatile long driveTimeout = 0;
 volatile long driveTimeDiff = 0;
 
@@ -68,13 +69,39 @@ void setup() {
 //  motorA.setPWM16(2,RESOLUTION);
 //  motorB.setPWM16(2,RESOLUTION);
   radio.begin();
-  radio.openReadingPipe(0, address);
+  radio.openWritingPipe(address2);
+  radio.openReadingPipe(1, address);
   radio.setPALevel(RF24_PA_MAX);
   radio.startListening();
   clearCommands();
+  
+  //Temperatur- und Abstandsmessung
+  
+  setEchoPins(16, 6); //16: A2, 6: D6
+  tempDistSetup();
+  timer = millis(); 
 }
 
 void loop() {
+  //Temperatur- und Abstandsmessung
+  //Serial.println(temperature);
+  //Serial.println(distance);
+  
+
+  unsigned long currentMillis = millis();
+  
+  if((unsigned long)(currentMillis - timer) >= 100){
+    temperature = dallas(4, 0); 
+    measureDistance();
+    distance = calculateDistance(); 
+    Serial.println(distance);
+    timer = currentMillis;
+    
+  }
+  
+  
+
+  
   if (radio.available()) {
     radio.read(&commands, sizeof(commands));
     commandInterpretation();
@@ -84,8 +111,22 @@ void loop() {
     pwmA = 0;
     pwmB = 0;
   }
+
+    
+    if(distance < 20){
+    //Serial.println("Achtung!");
+    if(pwmA < 0 && pwmB < 0){
+        pwmA = 0;
+        pwmB = 0;
+      }
+    }
+    
+    
     drive.setPWM_A(pwmA);
     drive.setPWM_B(pwmB);
+    
+
+    
 }
 
 void commandInterpretation() {
@@ -130,9 +171,12 @@ void commandInterpretation() {
                       driveOn = false;      
                       break;
       }
-      case getTemp :  {
-                      temperatur = (0xFF00 & (commands[i+1] << 8));
-                      temperatur |= (0x00FF & commands[i+2]);   
+      case getTemp :  { 
+                      //Serial.println("Senden!");                    
+                      radio.stopListening();     
+                      int16_t sendData = temperature;               
+                      radio.write(&sendData, sizeof(int16_t));
+                      radio.startListening();
                       break;
       }
       case timeToDrive : {
@@ -149,9 +193,11 @@ void commandInterpretation() {
                       forwardA = true;
                       forwardB = true;
                       driveOn = false; */
+                      
                       break; 
       }
     }
   }
+  
   clearCommands();
 }

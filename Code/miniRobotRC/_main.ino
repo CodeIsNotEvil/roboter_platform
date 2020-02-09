@@ -2,8 +2,6 @@
 #include <avr/io.h>
 #include <Arduino.h>
 
-long timer;
-
 void inline clearCommands() {
   for(uint8_t i=0; i<32; i++) {
     commands[i] = 0xFF;
@@ -17,19 +15,17 @@ void setup() {
   driveTimeout = 10;
   joystickInit(); //TODO
   clearCommands();
-  //Temperatur- und Abstandsmessung
-  tempDistSetup();
-  setEchoPins(0, 0); //Setze die pins für den Abstandsensor aus denen gelesenw erden soll das erster ist der Trigger-, das zweite der Echopin
-  timer = millis(); 
+
 }
 
 void loop() {
   //lcdMenu();
+  
   while(!tasten.getButtonCycle(buttonStart)) {
     manualDigitalDrive();
   } 
   tasten.clearButton(buttonStart);
-  while(!tasten.getButtonCycle(buttonStart)){
+ while(!tasten.getButtonCycle(buttonStart)){
     motorMapping();
   }
   tasten.clearButton(buttonStart);
@@ -40,6 +36,7 @@ void loop() {
   }
   tasten.clearButton(buttonStart);
   
+<<<<<<< HEAD
   //Temperatur- und Abstandsmessung
   /*
   temperature = dallas(4, 0);
@@ -51,6 +48,8 @@ void loop() {
   
   distance = calculateDistance();
   */
+=======
+>>>>>>> 48327ec5c42c4d70afa8e9c00bbf52ab2db2ca05
 }
 
 void lcdMenu() {

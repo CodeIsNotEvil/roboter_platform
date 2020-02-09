@@ -3,6 +3,11 @@ ISR(TIMER2_COMPA_vect) {
   tasten.checkButtons();
   renderTime++;
   if(renderTime >= renderTimeout) {
+    lcd.clear();
+    for(uint8_t i = 0; i < sizeof(lcdLines); i++) {
+      lcd.gotoXY(0, i);
+      lcd.print(lcdLines[i]);  
+    }
     lcd.renderAll();
     renderTime = 0;
   }
