@@ -45,7 +45,7 @@ void joystickInit() {
   void showValuesOnLCD(){
     //TODO BUILD STRING
     //lcd.clear();
-    lcd.gotoXY(0,0);
+    /*lcd.gotoXY(0,0);
     lcd.print("              ");
     lcd.gotoXY(0,0);
     lcd.print("WithLib");
@@ -58,7 +58,9 @@ void joystickInit() {
     lcd.print("              ");
     lcd.gotoXY(0,2);
     lcd.print("RightPWM: ");
-    lcd.print(right -> PWMValue);
+    lcd.print(right -> PWMValue);*/
+    lcdLines[0] = "Links: " + String(left -> PWMValue, DEC);
+    lcdLines[1] = "Links: " + String(right -> PWMValue, DEC);
     }
 
   void send(){

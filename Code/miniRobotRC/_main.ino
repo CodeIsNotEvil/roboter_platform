@@ -35,21 +35,6 @@ void loop() {
     
   }
   tasten.clearButton(buttonStart);
-  
-<<<<<<< HEAD
-  //Temperatur- und Abstandsmessung
-  /*
-  temperature = dallas(4, 0);
-  
-  if(millis() - timer >= 100){
-	measureDistance();
-	timer = millis();  
-  }
-  
-  distance = calculateDistance();
-  */
-=======
->>>>>>> 48327ec5c42c4d70afa8e9c00bbf52ab2db2ca05
 }
 
 void lcdMenu() {

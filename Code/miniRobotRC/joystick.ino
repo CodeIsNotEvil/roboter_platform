@@ -20,23 +20,14 @@ void motorMapping() {
   pwmB = map(leftPWM, -255,255,leftMin,leftMax);
   pwmA = map(rightPWM, -255,255,rightMin,rightMax);
   if((millis() - temp) > 100) {
-<<<<<<< HEAD
-    //lcd.clear();
-    lcd.println("Links: ");
-    lcd.println(pwmB);
-    lcd.gotoXY(0,2);
-    lcd.println("Rechts: ");
-    lcd.println(pwmA);
-=======
  //   lcd.clear();
  //   lcd.println("Links: ");
     lcdLines[0] = "Links: " + String(pwmB, DEC);
  //   lcd.println(pwmB);
  //   lcd.gotoXY(0,2);
  //   lcd.println("Rechts: ");
-    lcdLines[0] = "Rechts: " + String(pwmA, DEC);
+    lcdLines[1] = "Rechts: " + String(pwmA, DEC);
  //  lcd.println(pwmA);
->>>>>>> 48327ec5c42c4d70afa8e9c00bbf52ab2db2ca05
   }
 
   senden();

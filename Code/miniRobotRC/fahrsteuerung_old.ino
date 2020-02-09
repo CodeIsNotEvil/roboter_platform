@@ -6,57 +6,31 @@ void manualDigitalDrive() {
  // while(!tasten.getButtonCycle(buttonL1)) {
     clearCommands();
     if(!tasten.getAnyPressed()) {
-<<<<<<< HEAD
-      //lcd.clear();
-      lcd.println("Warte...");
-=======
       lcdLines[0] = "Warte...";
-      
- 
->>>>>>> 48327ec5c42c4d70afa8e9c00bbf52ab2db2ca05
+
     }
     if(tasten.checkButton(buttonB) || tasten.checkButton(buttonUp)) {
             pwmA = -215;
             pwmB = -255;
-<<<<<<< HEAD
-            //lcd.clear();
-            lcd.println("geradeaus fahren");
-=======
             lcdLines[0] = "geradeaus fahren";
->>>>>>> 48327ec5c42c4d70afa8e9c00bbf52ab2db2ca05
             goOn =true;
     }
     if(tasten.checkButton(buttonC) || tasten.checkButton(buttonDown)) {
             pwmA = 100;
             pwmB = 255;
-<<<<<<< HEAD
-            //lcd.clear();
-            lcd.println("rueckwaerts fahren");
-=======
             lcdLines[0] = "rueckwaerts fahren";
->>>>>>> 48327ec5c42c4d70afa8e9c00bbf52ab2db2ca05
             goOn =true;
      }
     if(tasten.checkButton(buttonRight)) {
         pwmA = -100;  //rechter Motor
         pwmB = 100;
-<<<<<<< HEAD
-        //lcd.clear();
-        lcd.println("rechts lenken");
-=======
         lcdLines[0] = "rechts lenken";
->>>>>>> 48327ec5c42c4d70afa8e9c00bbf52ab2db2ca05
             goOn =true;
     } 
     if(tasten.checkButton(buttonLeft)) {
         pwmB = -100;
         pwmA = 100;
-<<<<<<< HEAD
-        //lcd.clear();
-        lcd.println("links lenken");
-=======
         lcdLines[0] = "links lenken";
->>>>>>> 48327ec5c42c4d70afa8e9c00bbf52ab2db2ca05
             goOn =true;
     }
       if(goOn) {
