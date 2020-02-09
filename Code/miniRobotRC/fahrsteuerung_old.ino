@@ -3,34 +3,34 @@ void manualDigitalDrive() {
  // while(!tasten.getButtonCycle(buttonL1)) {
     clearCommands();
     if(!tasten.getAnyPressed()) {
-      lcd.clear();
+      //lcd.clear();
       lcd.println("Warte...");
     }
     if(tasten.checkButton(buttonB) || tasten.checkButton(buttonUp)) {
             pwmA = -215;
             pwmB = -255;
-            lcd.clear();
+            //lcd.clear();
             lcd.println("geradeaus fahren");
             goOn =true;
     }
     if(tasten.checkButton(buttonC) || tasten.checkButton(buttonDown)) {
             pwmA = 100;
             pwmB = 255;
-            lcd.clear();
+            //lcd.clear();
             lcd.println("rueckwaerts fahren");
             goOn =true;
      }
     if(tasten.checkButton(buttonRight)) {
         pwmA = -100;  //rechter Motor
         pwmB = 100;
-        lcd.clear();
+        //lcd.clear();
         lcd.println("rechts lenken");
             goOn =true;
     } 
     if(tasten.checkButton(buttonLeft)) {
         pwmB = -100;
         pwmA = 100;
-        lcd.clear();
+        //lcd.clear();
         lcd.println("links lenken");
             goOn =true;
     }

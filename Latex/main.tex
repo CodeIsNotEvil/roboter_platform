@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%---------------------------------------------
 % Lachaise Assignment
 % LaTeX Template
 % Version 1.0 (26/6/2018)
@@ -13,25 +13,27 @@
 % License:
 % CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
 % 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%---------------------------------------------------
 
 %----------------------------------------------------------------------------------------
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
 
 \documentclass{article}
+% Include the file specifying the document structure and custom commands
+\input{structure.tex} 
 
-\input{structure.tex} % Include the file specifying the document structure and custom commands
 
 %----------------------------------------------------------------------------------------
 %	INFORMATION
 %----------------------------------------------------------------------------------------
 
-\title{Open Source Roboter Plattform} % Title
+% Title
+\title{Open Source Roboter Plattform} 
 
 \author{Lukas Reichwein\\ Yves Ehrlich\\ Nick Gnoevoj}
 
-\date{University of Applied Science Fulda --- \today} % University, school and/or department name(s) and a date
+\date{University of Applied Science Fulda --- \today} 
 
 %----------------------------------------------------------------------------------------
 
@@ -46,13 +48,13 @@
 %----------------------------------------------------------------------------------------
 
 \section{Vorwort} % Unnumbered section
-    \paragraph{Motivation}
-    Eine Plattform bieten ist etwas, das momentan sehr stark im Trend liegt, sei es im Software oder im Hardware Bereich. Im Softwarebereich zeigt sich dies meist durch Open-Source Bibliotheken, welche möglichst variabel einsetzbaren Code für jeden frei zugänglich machen. \\    
-    Ein solches Projekt war auch von einem der Projektmitglieder (Yves Ehrlich) als Privates Projekt geplant und so kam die Überlegung dies innerhalb des Modules Embedded Networking zu wählen.\linebreak
-    \paragraph{Basis des Projektes}
+    \paragraph{Motivation: }
+    Eine Plattform bieten ist etwas, das momentan sehr stark im Trend liegt, sei es im Software oder im Hardware Bereich. Im Softwarebereich zeigt sich dies meist durch Open-Source Bibliotheken, welche möglichst variabel einsetzbaren Code für jeden frei zugänglich machen.    
+    Ein solches Projekt war auch von einem der Projektmitglieder (Yves Ehrlich) als Privates Projekt geplant und so kam die Überlegung dies innerhalb des Modules Embedded Networking zu wählen.
+    \paragraph{Basis des Projektes: }
     Als Basis des Projektes dient einer schon bereits von Yves Ehrlich angefertigter Arduino Nano Shield samt Code,
     \cite{nanoGame} welcher als Fernsteuerung verwendet wird. 
-    \paragraph{Ziel des Projektes}	
+    \paragraph{Ziel des Projektes: }	
 	Ziel des Projektes ist ein ferngesteuerte, Open-Source basierende Roboterplattform.
 
 \newpage    
@@ -96,7 +98,7 @@ Bedingt durch den Zeitaufwand des gesamten Projektes und anderer Studienmodule h
 \section{Mechanik}%Yves
 
 Wie bereits unter „Überlegung“ erwähnt, gestaltete sich der Aufbau mit Achsträger, Radlager und Lagerschalen uvm. als zu Zeitintensiv um in der vorgegebenen Zeit bewältig werden zu können.
-Zum Entwurf der mechanischen Bauteile wurde das CAD Programm Fusion 360 von Autodesk verwendet. Dabei gab es kaum Schwierigkeiten, da Yves bereits sehr viel Erfahrung mit 3D-CAD Programmen gesammelt hat. Lediglich der Zwang Windows zu benutzen stellt eine ständige Unannehmlichkeit dar.
+Zum Entwurf der mechanischen Bauteile wurde das CAD Programm Fusion 360 von Autodesk verwendet. Dabei gab es kaum Schwierigkeiten, da Yves Ehrlich bereits sehr viel Erfahrung mit 3D-CAD Programmen gesammelt hat. Lediglich der Zwang Windows zu benutzen stellt eine ständige Unannehmlichkeit dar.
 
 Alle Entwürfe wurden mit einem 3D Drucker gedruckt, einem HCmaker7, ein Klon des bekannten Creality CR-10S.
 Das Material der Wahl war PLA. Für einen Außeneinsatz ist das Material wegen der geringen Witterungsbeständigkeit kaum geeignet. Insbesondere die geringe Temperaturbeständigkeit (max. 60°C) disqualifizieren das Material für den Einsatz in der Sonne. Da dies aber ohnehin nicht mehr geplant war, ist das Material für unseren Zweck geeignet.
@@ -120,7 +122,7 @@ Da die Herstellung der Platine von Hand erfolgen sollte, haben wir die Strukture
 
 \section{Verfahren}%Yves
 
-Als Verfahren zum beschichten der Platine diente die Tonertransfermethode. Dabei wird die Schaltung mit einem Laserdrucker auf geeignetes Papier gedruckt, in diesem Fall Photopapier, und dann mit Hitze auf die blanke Platine gedrückt. Für diesen Zweck hat Yves ein Laminiergerät umgebaut, welches den Vorgang erheblich erleichtert.
+Als Verfahren zum beschichten der Platine diente die Tonertransfermethode. Dabei wird die Schaltung mit einem Laserdrucker auf geeignetes Papier gedruckt, in diesem Fall Photopapier, und dann mit Hitze auf die blanke Platine gedrückt. Für diesen Zweck hat Yves Ehrlich ein Laminiergerät umgebaut, welches den Vorgang erheblich erleichtert.
 Da unsere Platine doppelseitig ist, müssen zuvor die zwei Seiten, welche die Schaltung enthalten Deckungsgleich aufeinander ausgerichtet werden und dann an den Rändern verklebt werden, damit man am Ende eine Art Tasche erhält, in welche dann die Platine eingesteckt werden kann.
 Das ganze läuft dann einige Male durch das Laminiergerät. Nach dem das erfolgt ist, lässt man die Platine etwas abkühlen und ab einer Temperatur von etwa 30-40°C schneidet man die Tasche seitlich auf und zieht vorsichtig das Papier ab. Der Toner bleibt am Kupfer haften und schützt an diesen Stellen, wie ein Fotolack, das Kupfer davor weggeätzt zu werden.
 Anschließen gibt man die beschichtete Platine in eine Ätzküvette welche mit einer Natriumpersulfat-Lösung gefüllt ist. Nach einiger Zeit kann man beim durchleuchten der Küvette sehen, wie sich das Kupfer immer weiter auflöst, bis am Ende die Schaltung klar und deutlich zu sehen ist. Dann wird die Platine entnommen und gründlich mit Wasser abgespült.
@@ -135,9 +137,10 @@ Nach dem verpressen (mangels passender Presse eher mit einem Körner breitschlag
 \end{figure}
 
 %Platine 
-\begin{figure}[h] 
-    \subfigure[Top-Layer]{\includegraphics[width=8cm]{pcbTop.png}} 
-    \subfigure[Bottom-Layer]{\includegraphics[width=8cm]{pcbBottom.png}} 
+\begin{figure}[h]
+	\centering 
+    \subfigure[Top-Layer]{\includegraphics[width=7.5cm]{pcbTop.png}} 
+    \subfigure[Bottom-Layer]{\includegraphics[width=7.5cm]{pcbBottom.png}} 
 \caption{fertig geätzte Platine} 
 \end{figure} 
 
@@ -157,9 +160,9 @@ Wegen der Überschaubarkeit der Schaltung haben wir auf einen Schaltplan verzich
 
 Auf die Fernsteuerung soll an dieser Stelle nicht näher eingegangen werden, da diese zum Zeitpunkt der Erstellung dieses Projektes bereits „fertig“ war.
 Es wurden lediglich ein Joystick sowie ein NRF24 ergänzt.
-Detaillierte Informationen finden sich im dazugehörigen Repositorium.
+Detaillierte Informationen finden sich im dazugehörigen Repositorium\cite{nanoGame}.
 
-Im Rahmen eines Arduino Workshops für Anfänger entwickelte Yves eine Platine, welche als Shield für einen Arduino Nano fungiert. Sie enthält grundlegende Dinge wie Tasten, einen Akku, eine stabile 5V Spannungsversorgung sowie ein monochromes LCD Display mit Hintergrundbeleuchtung, um nur die wichtigsten Sachen zu nennen.
+Im Rahmen eines Arduino Workshops für Anfänger entwickelte Yves Ehrlich eine Platine, welche als Shield für einen Arduino Nano fungiert. Sie enthält grundlegende Dinge wie Tasten, einen Akku, eine stabile 5V Spannungsversorgung sowie ein monochromes LCD Display mit Hintergrundbeleuchtung, um nur die wichtigsten Sachen zu nennen.
 
 Dank der Buchsenleiste auf der Rückseite, welche neben 3,3V und 5V Spannungsversorgung auch diverse I/Os und Analogeingänge bereitstellt, lässt sich das Shield „nanoGame“ hervorragend erweitern und für viele verschiedene Dinge nutzen, so auch als Fernsteuerung für unseren Roboter.
 
@@ -195,42 +198,69 @@ Da das Array eine feste Größe von 32 Byte hat, lassen sich folglich bis zu 10 
 
 \newpage    
 \section{SPI}%Lukas
+\subsection{Was ist SPI?}
+SPI - Serial Peripheral Interface ist der Standard für ein Synchronen Seriellen Datenbus. Dieser Datenbus kann zwei digitale Schaltungen mittels Master-Slave prinzip verbinden \cite{SPI}. Der Bus ermöglicht die verwendung von Mehreren Slaves, jedoch wird die Anzahl der Slaves durch die Anzahl der CS - ChipSelect Leitungen begrenzt. Die Datenübertragung geschiet über eine Seperate Leitung, auch SD (Serial Data) genannt. 
+\paragraph{Rolle des Masters}
+Der Master gibt das Taktsignal über den SCK (Serial Clock) Ausgang an, desweiteren wählt er einen Slave mit welchem er kommunizieren möchte über den CS (ChipSelect).
+\paragraph{Rolle des Slaves} %TODO
+
+\subsection{Einsatz von SPI innerhalb des Projektes}
+\paragraph{Verbindung: }
+Um die Verbindung zwischen dem nRF24L01 Chip und dem Arduino herzustellen  wurden zunächst alle Verbindungen mit Ausnahme des IRQ Pins getätigt, da dieser lediglich Interrupt Steuerung ermöglicht. Im Folgender Graphik ist das Pinout vom nRF24L01 Chip abgebildet. Dabei sind die Kürzel wie folgt benannt: CE - Chip Enable dieser entspricht dem Chip Select Pin, CSN -Ship Select Not dieser ist die Invertierte version des CE, SCK - Serial Clock, MISO - Master in Slave out, MOSI - Master out Slave in und die beiden Pins für die Stromversorgung VCC und Ground. Die beiden pins MISO und MOSI sind die Datenleitungen und werden an den Gleichnamingen Pins des Arduinos angeschlossen.
+\begin{figure}[h]
+	\includegraphics[width=8cm]{nRF24L01Pinout.png}
+	\centering
+	\caption{Pinout des nRF24L01 Chips \cite{nRF24Pinout}}
+\end{figure}
 
 \newpage
 \section{Funksteuereung} %Lukas
-    Wie schon zuvor erwähnt wird für die Basis der Funksteuerung das Arduino Shield verwendet, welches mit einem RF24 Chip erweitert wurde.
-    \subsection{RF24} %Oder nur als paragraph je nachdem wie viel zusammen kommt.
-       Die Opensoucre Bibliothek RF24 \cite{RF24_Lib} diente als Codebasis für die Funksteuerung. Da diese Bibliothek bei korrekter Verwendung genau auf die Kommunikation zwischen zwei nRF24L01 Chips abgestimmt ist.
+    Wie schon zuvor erwähnt wird für die Basis der Funksteuerung das Arduino Shield verwendet, welches mit dem nRF24L01 Chip erweitert wurde. Der Roboter wurde ebenfalls mit dem nRF24L01 ausgestattet.
+    \subsection{Allgemeine Verwendung von RF24} %Oder nur als paragraph je nachdem wie viel zusammen kommt.
+       Die Opensoucre Bibliothek RF24 \cite{RF24Lib} diente als Codebasis für die Funksteuerung. Da diese Bibliothek bei korrekter Verwendung genau auf die Kommunikation zwischen zwei nRF24L01 Chips abgestimmt ist.
        Zur Verwendung der Bibliothek muss sie nur inkludiert und Instanziiert werden dabei werden die Beiden Pins CE und CSN für das Hardware-SPI konfiguriert.
        
        \begin{file}[RF24 initialisieren]
         \begin{lstlisting}[language=C++]
-            #include <RF24.h>
-            RF24 radio(A2, A3); // CE, CSN
+#include <RF24.h>
+RF24 radio(A2, A3); // CE, CSN
+const byte address[6] = "00001";
         \end{lstlisting}
         \end{file}
         
         Damit sind bereits Sämtliche Konfigurationen für die Hardware-SPI Kommunikation zwischen Arduino nano und dem nRF24L01 erledigt.
-        Kommunizieren zwischen zwei dieser Setups wird dann durch die Funktionen read und wirite, jedoch muss vor dem Start einer Kommunikation die Methode begin() aufgerufen werden.
+        Kommunizieren zwischen zwei dieser Setups wird dann durch die Funktionen read und wirite,
+        jedoch muss vor dem Start einer Kommunikation die Methoden begin(),
+        openWritingPipe(address) mit address als Kommunikationsleitung und stopListening() bei Sender bzw startListening() beim Empfänger aufgerufen werden.
+        Die Methode setPALevel() setzt den Power Amplifiyer Level umso höher dieser Wert umso Stärker das Signal,
+        wodurch der Stromverbrauch Steigt.
+        Der Anstieg des Stromverbrauchs kann auch bei einer nicht ganz konstanten Stromversorgung dazu führen das das Modul nicht korrekt funktioniert.
        \begin{file}[RF24 initialisieren]
         \begin{lstlisting}[language=C++]
-            //An der Sender Seite
-            radio.begin();
-            radio.write(&payload, sizeof(payload));
-            
-            //An der Empfaenger Seite
-            radio.begin();
-            if (radio.available()) {
-              radio.read(&payload, sizeof(payload));
-              //Payload weiter verarbeiten.
-            }
+//An der Sender Seite
+radio.begin();
+radio.openWritingPipe(address);
+radio.setPALevel(RF24_PA_MAX);
+radio.stopListening();
+radio.write(&payload, sizeof(payload));
+
+//An der Empfaenger Seite
+radio.begin();
+radio.openReadingPipe(0, address);
+radio.setPALevel(RF24_PA_MAX); 
+radio.startListening();
+if (radio.available()) {
+	radio.read(&payload, sizeof(payload));
+	//Payload weiter verarbeiten.
+}
         \end{lstlisting}
         \end{file} 
-        
-        
-        
-        
-    
+	\subsection{Verwendung innerhalb dieses Projektes}
+	\paragraph{Am Anfang des Projektes: }
+	Zu Begin des Projektes wurde zuerst die Funkkommunikation zwischen zwei Arduino's mittels nRF24L01 getestet, dabei gab es schon die ersten Komplikationen. Da der Chip nicht korrekt mit den Hardware SPI Anschlüssen des Arduino verbunden wurde. Nach dem weiteren Einlesen in die Funktionsweise von SPI konnten die Verbindungen richtig gesetzt und diese Komplikation wieder aufgehoben werden.
+	\paragraph{Logik hinter der Kommunikation: }
+	Um den Roboter mit der Fernsteuerung auch Steuern zu können musste erst ermittelt werden welche Daten der Roboter benötigt um zu fahren. %TODO Erklärung der Commandos
+	
 \newpage
 \section{Arduino Libaries} %Lukas
 
@@ -246,7 +276,6 @@ Da das Array eine feste Größe von 32 Byte hat, lassen sich folglich bis zu 10 
 
 \newpage
 \section{Ultraschallsensor} %Nick
-
 
 \newpage
 %----------------------------------------------------------------------------------------
@@ -281,7 +310,7 @@ Da das Array eine feste Größe von 32 Byte hat, lassen sich folglich bis zu 10 
 	\end{minipage}
 \end{center}
 
-%----------------------------------------------------------------------------------------
+%-----------------------------------------------------------------------------------------
 %	Beispiel für Code Snippets.
 %----------------------------------------------------------------------------------------
 
@@ -335,4 +364,7 @@ sys.stdout.write("Hello World!\n")
 
 %----------------------------------------------------------------------------------------
 
+
+
 \end{document}
+

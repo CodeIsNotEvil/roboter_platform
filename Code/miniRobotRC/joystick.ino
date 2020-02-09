@@ -40,7 +40,7 @@ void motorMapping() {
   pwmB = map(leftPWM, -255,255,leftMin,leftMax);
   pwmA = map(rightPWM, -255,255,rightMin,rightMax);
   if((millis() - temp) > 100) {
-    lcd.clear();
+    //lcd.clear();
     lcd.println("Links: ");
     lcd.println(pwmB);
     lcd.gotoXY(0,2);

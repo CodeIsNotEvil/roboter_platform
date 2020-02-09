@@ -35,11 +35,13 @@ void loop() {
   tasten.clearButton(buttonStart);
   while(!tasten.getButtonCycle(buttonStart)){
     joystickSteuerung(); //TODO ()
+
+    
   }
   tasten.clearButton(buttonStart);
   
   //Temperatur- und Abstandsmessung
-  
+  /*
   temperature = dallas(4, 0);
   
   if(millis() - timer >= 100){
@@ -48,7 +50,7 @@ void loop() {
   }
   
   distance = calculateDistance();
-  
+  */
 }
 
 void lcdMenu() {
