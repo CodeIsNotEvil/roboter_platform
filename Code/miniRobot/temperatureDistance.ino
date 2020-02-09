@@ -5,29 +5,31 @@
 int trig;
 int echo;
 
-uint16_t distance3 = 0;
-uint16_t distance2 = 0;
+unsigned long distance3 = 0;
+unsigned long distance2 = 0;
 
-//ISR for PCINT20
+//ISR for PCINT2
 ISR(PCINT2_vect) {
   distance3 = pulseIn(echo, HIGH);
-  
   if(distance3 > 0){
     distance2 = distance3;
   }
-  delayMicroseconds(10);
   
-  PCICR &= ~0b00000100;
+  
+  PCICR &= ~0b00000111;
   PCMSK2 &= ~0b00010000;
+  delayMicroseconds(10);
 }
 
 void setEchoPins(int pin1, int pin2){
+  
   trig = pin1;
   echo = pin2;
+  
 }
 
 int16_t calculateDistance(){
-  int16_t result2 = distance2/ 58;
+  int16_t result2 = (int16_t)(((float) distance2/ 58.0));
   if(result2 > maxDistance){
     result2 = maxDistance;
   }
@@ -36,15 +38,17 @@ int16_t calculateDistance(){
 
 void measureDistance(){
     
-     digitalWrite(trig, HIGH);
+    digitalWrite(trig, HIGH);
     // ... wait for 10 µs ...
     
     delayMicroseconds(10);
     // ... put the trigger down ...
 
     digitalWrite(trig, LOW); 
+
+    Serial.println("messe...");
     PCICR |= 0b00000100;
-    PCMSK2 |= 0b00010000;
+    PCMSK2 |= (1 << echo);
     
     
 }
@@ -89,7 +93,6 @@ void tempDistSetup(){
    // Reset the trigger pin and wait a half a second
    digitalWrite(trig, LOW);
    delayMicroseconds(500);
-   Serial.println(echo);
 
    sei();
  

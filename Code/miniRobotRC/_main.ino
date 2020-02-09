@@ -23,14 +23,17 @@ void loop() {
   
   while(!tasten.getButtonCycle(buttonStart)) {
     manualDigitalDrive();
+    updateTemp();
   } 
   tasten.clearButton(buttonStart);
  while(!tasten.getButtonCycle(buttonStart)){
     motorMapping();
+    updateTemp();
   }
   tasten.clearButton(buttonStart);
   while(!tasten.getButtonCycle(buttonStart)){
     joystickSteuerung(); //TODO ()
+    updateTemp();
   }
   tasten.clearButton(buttonStart);
   

@@ -77,7 +77,7 @@ void setup() {
   
   //Temperatur- und Abstandsmessung
   
-  setEchoPins(16, 6); //16: A2, 6: D6
+  setEchoPins(A2, 6); //16: A2, 6: D6
   tempDistSetup();
   timer = millis(); 
 }
@@ -94,7 +94,6 @@ void loop() {
     temperature = dallas(4, 0); 
     measureDistance();
     distance = calculateDistance(); 
-    Serial.println(distance);
     timer = currentMillis;
     
   }
@@ -193,6 +192,7 @@ void commandInterpretation() {
                       forwardA = true;
                       forwardB = true;
                       driveOn = false; */
+
                       
                       break; 
       }
@@ -200,4 +200,5 @@ void commandInterpretation() {
   }
   
   clearCommands();
+  
 }
