@@ -198,7 +198,7 @@ Da das Array eine feste Größe von 32 Byte hat, lassen sich folglich bis zu 10 
 
 \newpage    
 \section{SPI}%Lukas
-\subsection{Was ist SPI?}
+\subsection{Was ist SPI?} %Lukas
 SPI - Serial Peripheral Interface ist der Standard für ein Synchronen Seriellen Datenbus. Dieser Datenbus kann zwei digitale Schaltungen mittels Master-Slave prinzip verbinden \cite{SPI}. Der Bus ermöglicht die verwendung von Mehreren Slaves, jedoch wird die Anzahl der Slaves durch die Anzahl der CS - ChipSelect Leitungen begrenzt. Die Datenübertragung geschiet über eine Seperate Leitung, auch SD (Serial Data) genannt. 
 \paragraph{Rolle des Masters}
 Der Master gibt das Taktsignal über den SCK (Serial Clock) Ausgang an, desweiteren wählt er einen Slave mit welchem er kommunizieren möchte über den CS (ChipSelect).
@@ -215,7 +215,7 @@ Um die Verbindung zwischen dem nRF24L01 Chip und dem Arduino herzustellen  wurde
 \end{figure}
 
 \newpage
-\section{Funksteuereung} %Lukas
+\section{Drahtlose Verbindung} %Lukas
     Wie schon zuvor erwähnt wird für die Basis der Funksteuerung das Arduino Shield verwendet, welches mit dem nRF24L01 Chip erweitert wurde. Der Roboter wurde ebenfalls mit dem nRF24L01 ausgestattet.
     \subsection{Allgemeine Verwendung von RF24} %Oder nur als paragraph je nachdem wie viel zusammen kommt.
        Die Opensoucre Bibliothek RF24 \cite{RF24Lib} diente als Codebasis für die Funksteuerung. Da diese Bibliothek bei korrekter Verwendung genau auf die Kommunikation zwischen zwei nRF24L01 Chips abgestimmt ist.
@@ -256,17 +256,41 @@ if (radio.available()) {
 }
         \end{lstlisting}
         \end{file} 
-	\subsection{Verwendung innerhalb dieses Projektes}
+	\subsection{Verwendung von RF24 innerhalb dieses Projektes}
 	\paragraph{Am Anfang des Projektes: }
 	Zu Begin des Projektes wurde zuerst die Funkkommunikation zwischen zwei Arduino's mittels nRF24L01 getestet, dabei gab es schon die ersten Komplikationen. Da der Chip nicht korrekt mit den Hardware SPI Anschlüssen des Arduino verbunden wurde. Nach dem weiteren Einlesen in die Funktionsweise von SPI konnten die Verbindungen richtig gesetzt und diese Komplikation wieder aufgehoben werden.
 	\paragraph{Logik hinter der Kommunikation: }
-	Um den Roboter mit der Fernsteuerung auch Steuern zu können musste erst ermittelt werden welche Daten der Roboter benötigt um zu fahren. Diese Daten wurden dann in ein Commands Array gespeichert, welches dann übertragen wurde. Das Array besteht aus Folgenden Inhalten:  %TODO Erklärung der Commandos
-	
-\newpage
-\section{Arduino Libaries} %Lukas
+	Um den Roboter mit der Fernsteuerung auch Steuern zu können musste erst ermittelt werden welche Daten der Roboter benötigt um zu fahren. Diese Daten wurden dann in ein 32Byte großes Commands Array gespeichert, welches dann übertragen wurde. Das Array besteht aus Folgenden Inhalten:
+\begin{enumerate}
+\item speedA      - Geschwindigkeit des rechten Motors. 
+\item dirA        - Vorzeichen der Geschwindigkeit des rechten Motors.
+\item speedB      - Geschwindigkeit des linken Motors.
+\item dirB        - Vorzeichen der Geschwindigkeit des linken Motors.
+\item goDrive     - startet autodrive.
+\item stopDrive   - stoppt autodrive.
+\item getTemp     - löst Temperaturübertragung aus.
+\item timeToDrive - Zeit die der Roboter fahren soll.
+\item nothing     - Stoppt den Roboter.
+\end{enumerate}
+
+\paragraph{Übertragung der Commands} 
+Das Commands Array wurde dann wie in der Sektion allgemeine Verwendung von RF24 beschrieben Übertragen, dabei ist die Payload das Commands Array. Der Sender ist Die Fernsteuerung und der Roboter ist der Empfänger. Der Empfänger besitzt daher auch die commandInterpretation() Funktion, welche die entsprechenden Kommandos liest und umsetzt.
 
 \newpage
-\section{Joystick Integration} %Lukas
+\section{Steuerung} %Lukas
+Der Roboter kann über ein Steuerkreuz mit 4 Buttons oder einen Joystick gesteuert werden. Begonnen wurde mit der Steuerung über die Buttons, dann wurde die Steuerung mittels Joystick realisiert und anschließend wurde diese dann noch stark variable als C++ Library Implementiert.
+
+\subsection{Button Steuerung} %Yves/Lukas
+%TODO Die Button Steuerung ermöglicht entweder Vorwärts, Rückwärts, Links oder Rechts zu fahren.
+
+\subsection{Joystick Steuerung} %Lukas
+%TODO Hier wurde die ButtonSteuerungslogik übernommen
+
+\subsection{Überführung der Joystick Steuerung in eine Library} %Lukas
+%TODO Hier wurde besonderes Augenmerk auf wiederverwendbarkeit und varibilität gelegt.   
+
+\newpage
+\section{Arduino Libaries} %Lukas
 
 \newpage
 \section{Motorsteuerung} %Yves
