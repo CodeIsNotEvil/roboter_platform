@@ -202,11 +202,12 @@ Da das Array eine feste Größe von 32 Byte hat, lassen sich folglich bis zu 10 
 SPI - Serial Peripheral Interface ist der Standard für ein Synchronen Seriellen Datenbus. Dieser Datenbus kann zwei digitale Schaltungen mittels Master-Slave prinzip verbinden \cite{SPI}. Der Bus ermöglicht die verwendung von Mehreren Slaves, jedoch wird die Anzahl der Slaves durch die Anzahl der CS - ChipSelect Leitungen begrenzt. Die Datenübertragung geschiet über eine Seperate Leitung, auch SD (Serial Data) genannt. 
 \paragraph{Rolle des Masters}
 Der Master gibt das Taktsignal über den SCK (Serial Clock) Ausgang an, desweiteren wählt er einen Slave mit welchem er kommunizieren möchte über den CS (ChipSelect).
-\paragraph{Rolle des Slaves} %TODO
+\paragraph{Rolle des Slaves}
+Der Slave ist solange inaktiv bis dieser über den CS Pin aktiviert wird. Nach der Aktivierung wird über Serial Data kommuniziert, das Taktsignal wird über den SCK Synchronisiert bzw vom Master übernommen. 
 
 \subsection{Einsatz von SPI innerhalb des Projektes}
 \paragraph{Verbindung: }
-Um die Verbindung zwischen dem nRF24L01 Chip und dem Arduino herzustellen  wurden zunächst alle Verbindungen mit Ausnahme des IRQ Pins getätigt, da dieser lediglich Interrupt Steuerung ermöglicht. Im Folgender Graphik ist das Pinout vom nRF24L01 Chip abgebildet. Dabei sind die Kürzel wie folgt benannt: CE - Chip Enable dieser entspricht dem Chip Select Pin, CSN -Ship Select Not dieser ist die Invertierte version des CE, SCK - Serial Clock, MISO - Master in Slave out, MOSI - Master out Slave in und die beiden Pins für die Stromversorgung VCC und Ground. Die beiden pins MISO und MOSI sind die Datenleitungen und werden an den Gleichnamingen Pins des Arduinos angeschlossen.
+Um die Verbindung zwischen dem nRF24L01 Chip und dem Arduino herzustellen  wurden zunächst alle Verbindungen getätigt. Im Folgender Graphik ist das Pinout vom nRF24L01 Chip abgebildet. Dabei sind die Kürzel wie folgt benannt: CE - Chip Enable dieser entspricht dem Chip Select Pin, CSN -Ship Select Not dieser ist die Invertierte version des CE, SCK - Serial Clock, MISO - Master in Slave out, MOSI - Master out Slave in und die beiden Pins für die Stromversorgung VCC und Ground. Die beiden pins MISO und MOSI sind die Datenleitungen und werden an den Gleichnamingen Pins des Arduinos angeschlossen. Desweiteren ermöglicht der IRQ Interruptsteuerung dieser Pin ist Optional zu verwenden.
 \begin{figure}[h]
 	\includegraphics[width=8cm]{nRF24L01Pinout.png}
 	\centering
@@ -229,16 +230,12 @@ const byte address[6] = "00001";
         \end{file}
         
         Damit sind bereits Sämtliche Konfigurationen für die Hardware-SPI Kommunikation zwischen Arduino nano und dem nRF24L01 erledigt.
-<<<<<<< HEAD
         Kommunizieren zwischen zwei dieser Setups wird dann durch die Funktionen read und wirite,
         jedoch muss vor dem Start einer Kommunikation die Methoden begin(),
         openWritingPipe(address) mit address als Kommunikationsleitung und stopListening() bei Sender bzw startListening() beim Empfänger aufgerufen werden.
         Die Methode setPALevel() setzt den Power Amplifiyer Level umso höher dieser Wert umso Stärker das Signal,
         wodurch der Stromverbrauch Steigt.
         Der Anstieg des Stromverbrauchs kann auch bei einer nicht ganz konstanten Stromversorgung dazu führen das das Modul nicht korrekt funktioniert.
-=======
-        Kommunizieren zwischen zwei dieser Setups wird dann durch die Funktionen read und write, jedoch muss vor dem Start einer Kommunikation die Methode begin() aufgerufen werden.
->>>>>>> 48327ec5c42c4d70afa8e9c00bbf52ab2db2ca05
        \begin{file}[RF24 initialisieren]
         \begin{lstlisting}[language=C++]
 //An der Sender Seite
@@ -263,7 +260,7 @@ if (radio.available()) {
 	\paragraph{Am Anfang des Projektes: }
 	Zu Begin des Projektes wurde zuerst die Funkkommunikation zwischen zwei Arduino's mittels nRF24L01 getestet, dabei gab es schon die ersten Komplikationen. Da der Chip nicht korrekt mit den Hardware SPI Anschlüssen des Arduino verbunden wurde. Nach dem weiteren Einlesen in die Funktionsweise von SPI konnten die Verbindungen richtig gesetzt und diese Komplikation wieder aufgehoben werden.
 	\paragraph{Logik hinter der Kommunikation: }
-	Um den Roboter mit der Fernsteuerung auch Steuern zu können musste erst ermittelt werden welche Daten der Roboter benötigt um zu fahren. %TODO Erklärung der Commandos
+	Um den Roboter mit der Fernsteuerung auch Steuern zu können musste erst ermittelt werden welche Daten der Roboter benötigt um zu fahren. Diese Daten wurden dann in ein Commands Array gespeichert, welches dann übertragen wurde. Das Array besteht aus Folgenden Inhalten:  %TODO Erklärung der Commandos
 	
 \newpage
 \section{Arduino Libaries} %Lukas
