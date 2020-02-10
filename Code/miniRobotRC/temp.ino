@@ -7,7 +7,7 @@
         clearCommands();
         
         commands[0] = getTemp;
-        radio.write(&commands, sizeof(commands) && !err);
+        radio.write(&commands, sizeof(commands) /* && !err */);
         unsigned long start = micros();
         radio.startListening();
         while(!radio.available()){
@@ -16,13 +16,17 @@
           if((unsigned long)(currentMicros - start) >= 1){
             
             err = true;
-          }
+          } 
+/*
+          int16_t readData;
+          radio.read(&readData, sizeof(int16_t));
+          temperature = readData; */
         }
         if(!err){
           int16_t readData;
           radio.read(&readData, sizeof(int16_t));
           temperature = readData;
-        }
+        } 
         radio.stopListening();
         clearCommands();
       }

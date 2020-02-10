@@ -1,12 +1,11 @@
 void manualDigitalDrive() {
 
   bool goOn = false;
-  String temp_str = "T: " + String(temperature) + " Grad C";
-  lcdLines[5] = temp_str;
  // while(!tasten.getButtonCycle(buttonL1)) {
     clearCommands();
     if(!tasten.getAnyPressed()) {
       lcdLines[0] = "Warte...";
+      lcdLines[1] = "";
 
     }
     if(tasten.checkButton(buttonB) || tasten.checkButton(buttonUp)) {

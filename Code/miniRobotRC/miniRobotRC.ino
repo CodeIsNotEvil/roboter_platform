@@ -16,7 +16,7 @@ volatile myInterrupts Timer2;
 volatile myInterrupts pwmBL;
 volatile shiftRegButton tasten;
 //LCD
-uint8_t renderTime = 0;
+/*uint8_t */long renderTime = 0;
 #define renderTimeout 100   //es wird alle 100ms gerendert
 String lcdLines[6];         //Strings welche alle 100ms ausgegeben werden
 
@@ -41,6 +41,7 @@ uint16_t driveTimeout = 0;
 
 uint8_t distance;
 uint8_t temperature = 0;
+
 
 unsigned long temp_time = millis();
 

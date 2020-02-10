@@ -15,7 +15,7 @@ void setup() {
   driveTimeout = 10;
   joystickInit(); //TODO
   clearCommands();
-
+  renderTime = millis();
 }
 
 void loop() {
@@ -23,17 +23,22 @@ void loop() {
   
   while(!tasten.getButtonCycle(buttonStart)) {
     manualDigitalDrive();
-    updateTemp();
+    //updateTemp();
+      String temp_str = "T: " + String(temperature) + " Grad C";
+      lcdLines[5] = temp_str;
+    refreshLCD();
   } 
   tasten.clearButton(buttonStart);
  while(!tasten.getButtonCycle(buttonStart)){
     motorMapping();
-    updateTemp();
+    //updateTemp();
+    refreshLCD();
   }
   tasten.clearButton(buttonStart);
   while(!tasten.getButtonCycle(buttonStart)){
     joystickSteuerung(); //TODO ()
-    updateTemp();
+    //updateTemp();
+    refreshLCD();
   }
   tasten.clearButton(buttonStart);
 }
@@ -42,4 +47,17 @@ void lcdMenu() {
   lcd.println("Platzhalter");
 
   
+}
+
+void refreshLCD() {
+  
+  if((millis() - renderTime) >= renderTimeout) {
+    lcd.clear();
+    for(uint8_t i = 0; i < sizeof(lcdLines); i++) {
+      lcd.gotoXY(0, i);
+      lcd.print(lcdLines[i]);  
+    }
+    lcd.renderAll();
+    renderTime = millis();
+  }
 }
