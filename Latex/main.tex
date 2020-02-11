@@ -383,7 +383,7 @@ Für unsere Implementierung haben wir uns an\\ \url{https://www.scargill.net/rea
 \begin{file}[DS18B20-1]	
         \begin{lstlisting}[language=C++, inputencoding={utf8}, extendedchars=false]        
 #include <OneWire.h>
-// Die DallasTemperature Library fällt weg
+// DallasTemperature Library nicht notwendig
 int16_t dallas(int x){
   // Initialisierung von OneWire auf Pin x  
   OneWire ds(x); 
@@ -438,13 +438,73 @@ void loop(){
         \end{lstlisting}
         
 \end{file}
-Im Groben, holen wir uns hier nur den Binärwert vom Sensor und teilen ihn durch 16. Die 16 ergibt sich aus einer Tabelle aus dem Datenblatt, wo man alle Werte über 0 Null einfach nur das 16-fache der Temperatur sind. Man kann damit zwar keine negativen Werte berechnen, aber das ist für unsere Bedürfnisse vollkommen ausreichend.\\
+Im Groben, holen wir uns hier nur den Binärwert vom Sensor und teilen ihn durch 16. Die 16 ergibt sich aus einer Tabelle aus dem Datenblatt, aus der sich alle Werte über 0 Null einfach als das 16-fache der Temperatur bilden. Man kann damit zwar keine negativen Werte berechnen, aber das ist für unsere Bedürfnisse vollkommen ausreichend.\\
 \\
 Um den Roboter so wenig wie möglich zu belasten und somit eine eine schnelle Reaktionszeit zu ermöglichen, wird die Temperaturmessung nur alle 100ms durchgeführt und nur jede Sekunde durch den Funkcontroller abgefragt.  
 
 \newpage
 \section{Ultraschallsensor} %Nick
+Zur Messung der Distanz zu einem Objekt vor dem Robotor benutzen wir einen HC-SR04 Ultraschallsensor. Dieser kann einen Abstant bis ca 450cm messen. Das ganze funktioniert, durch ein Signal, das der Sensor von sich gibt und die Zeit zählt bis er ein Echo zurückbekommt.\\
+\begin{figure}[h]
+	\includegraphics[width=12cm]{HC-SR04.jpg}
+	\centering
+	\caption{Der benutzte Sensor \\1) Spannung 2) Trigger Pin 3) Echo Pin 4) Erdung}
+\end{figure} 
+Die Implementation ist relativ einfach. Wir setzen den Trigger Pin als Ausgang und den Echo Pin als Eingang. Wir senden mit dem Trigger Pin, dann ein Signal, welches vom Echo Pin empfangen wird und rechnen dann die Zeit die dafür gebraucht wurde in cm um.\\
+\\
+Zum Empfangen des Echo nutzen wir einen Pinchange Interrupt. Diese ISR wird ausgeführt, wenn ein Signal an einen bestimmten Pin kommt. Dazu aktivieren wir die nötigen PCINTs im PCIRC Register und PCMSK2 das bit für unseren Pin.\\
+\\
+In der ISR messen wir die Zeit bis ein Echo ankommt und teilen es, wie im Datenblatt beschrieben, durch 58 um die Distanz in cm zu bekommen.
 
+\begin{file}[HC-SR04-1]
+		
+        \begin{lstlisting}[language=C++, inputencoding={utf8}, extendedchars=false]   
+// Trigger- und Echo Pins setzen  
+int trig = 3;
+int echo = 4; 
+long distance;        
+
+ISR(PCINT2_vect) {
+  //Zeit des Signals messen
+  distance = pulseIn(echo, HIGH);
+  distance = distance/58;  
+  // Pinchange Interrupt ausmachen
+  PCICR &= ~0b00000111;
+  PCMSK2 &= ~(1 << echo);
+   
+  delayMicroseconds(10);
+  
+}
+
+void measureDistance(){
+  // Signal für Messung abgeben
+  digitalWrite(trig, HIGH);  
+  delayMicroseconds(10);
+  // Signal für Messung abgeben
+  digitalWrite(trig, LOW); 
+  // Pinchange Interrupt aktivieren
+  PCICR |= 0b00000100;
+  PCMSK2 |= (1 << echo);
+       
+}
+
+void setup(){
+  // Trigger Pin als Ausgang setzen
+  pinMode(trig, OUTPUT);
+  // Echo Pin als Eingang setzen
+  pinMode(echo, INPUT);
+  // Trigger resetten
+  digitalWrite(trig, LOW);
+}
+
+void loop(){
+	// Distanz messen
+	measureDistance();
+}
+
+        \end{lstlisting}
+        
+\end{file}
 \newpage
 %----------------------------------------------------------------------------------------
 %	Latex Beispeiele
