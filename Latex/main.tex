@@ -22,8 +22,9 @@
 \documentclass[12pt]{article}
 % Include the file specifying the document structure and custom commands
 \input{structure.tex} 
-
-
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{caption}
 %----------------------------------------------------------------------------------------
 %	INFORMATION
 %----------------------------------------------------------------------------------------
@@ -333,9 +334,114 @@ Die Umsetzung ist nichts anderes als die PWM-Werte für die beiden Motoren in je
 %Folgende beiden ließen sich auch durch subsections mittels sensoric als section realisieren, kommt aber auf die menge des textes an subsections sollten nicht über eine halbe seite lang sein.
 \newpage
 \section{Thermosensor} %Nick
-	Wie bereits erwähnt benutzen wir einen Dallas DS1820  1-Wire Digital Thermometer, um die Motortemperatur zu messen. Der DS1820 speichert die Temperatur als einen 9bit Wert und kann Temperaturen im Bereich von -55°C bis 125°C messen. Für unsere Bedürfnisse reicht es wenn wir in 1-er Schritten messen. Der Sensor kommt aber auch mit halben Graden zu recht. 
+Wie bereits erwähnt benutzen wir einen Dallas DS18b20  1-Wire Digital Thermometer, um die Motortemperatur zu messen. Der DS18b20 speichert die Temperatur als einen 9bit - 12bit Wert und kann Temperaturen im Bereich von -55°C bis 125°C messen. Für unsere Bedürfnisse reicht es wenn wir in 1-er Schritten messen. Der Sensor kommt aber auch mit kleineren Inkrementen zu recht. Der Senser benötig jedoch die OneWire Library.\\
+
+\begin{figure}[h]
+	\includegraphics[width=12cm]{ds18b20.jpg}
+	\centering
+	\caption{Der benutzte Sensor \\1) Erdung 2) Datenleitung 3) Spannung}
+\end{figure}
+Eine Messung wird durchgeführt indem der Sensor Takte, innerhalb eines Zeitfensters zählt. Der Zähler startet bei einem Wert, der -55°C darstellt. Erreicht der Zähler 0 schneller als das vorgegebene Zeitfenster wird das Temperaturregister inkrementiert. Der Zähler wird auf einen vom Slope Accumulator Circuitry abhängigen wert gestellt und wieder runtergezählt. Dies wiederholt sich solange bis das festgelegte Zeitfenster abgelaufen ist. \\
+\\
+Es gibt verschiedene Wege den Code für den Sensor zu implementieren. Der einfachste Weg wäre die DallasTemperature-Library zu benutzen.
+
+\begin{file}[DS18B20]
+        \begin{lstlisting}[language=C++]
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+// OneWire auf Pin 4 setzen			
+OneWire oneWire(4);
+
+// DallasTemperatures den OneWire zuweisen
+DallasTemperatures sensors(&oneWire);
+
+void setup(){
+  Serial.begin(9600);
 	
-	Eine Messung wird durchgeführt indem der Sensor Takte, innerhalb eines Zeitfensters zählt. Der Zähler startet bei einem Wert, der -55°C darstellt. Erreicht der Zähler 0 schneller als das vorgegebene Zeitfenster wird das Temperaturregister inkrementiert. Der Zähler wird auf einen vom Slope Accumulator Circuitry abhängigen wert gestellt und wieder runtergezählt. Dies wiederholt sich solange bis das festgelegte Zeitfenster abgelaufen ist. 
+  // Die Library starten
+  sensors.begin();
+}
+
+void loop(){
+  // Temperaturmessung anfordern
+  sensors.requestTemperatures();
+	
+  // Temperatur anzeigen
+  Serial.print(sensors.getTempCByIndex(0));
+  
+}
+
+        \end{lstlisting}
+\end{file}
+Das war auch der erste Ansatz. Der Clue an der Sache ist jedoch, dass die Prozedur auf die Weise etwa 600ms dauert und das den Roboter viel zu lange blockieren würde, da er in der Zeit keine weiteren Befehle verarbeiten kann. Also wurde diese Idee gestrichen und nach einer effizienteren Alternative gesucht.\\
+\\ 
+Für unsere Implementierung haben wir uns an\\ \url{https://www.scargill.net/reading-dallas-ds18b20-chips-quickly/} orientiert. Dieses Beispiel ermöglicht es eine Messung in nur 5ms durchzuführen. Es wurden jedoch einige Änderungen in der Umrechnung der Temperatur gemacht. Da ein Einsatz in negativen Temperaturen nicht vorgesehen ist, machen wir eine viel simplere Umrechnung als die im Blog. \\
+\\
+
+
+\begin{file}[DS18B20-1]	
+        \begin{lstlisting}[language=C++, inputencoding={utf8}, extendedchars=false]        
+#include <OneWire.h>
+// Die DallasTemperature Library fällt weg
+int16_t dallas(int x){
+  // Initialisierung von OneWire auf Pin x  
+  OneWire ds(x); 
+  // Initialisierung unserer Prozesswerte
+  byte i;
+  byte data[2];
+  int16_t result;
+  // Chip zurücksetzen
+  ds.reset(); 
+  // Rom überspringen
+  ds.write(0xCC);
+  // Auslesen der Werte  aus dem Scratchpad
+  ds.write(0xBE); 
+  result = 0;
+  // Die Datenbytes speichern
+  for(i = 0; i < 2; i++){
+    data[i] = ds.read();
+  } 
+  // Umrechnung der Werte in Grad Celsius
+  result = (data[1]<<8)|data[0];
+  result = result/16;
+  ds.reset();
+  ds.write(0xCC);  
+  // Messung starten
+  ds.write(0x44, 1);
+  return result;
+}
+        \end{lstlisting}
+        
+\end{file}
+
+\begin{file}[DS18B20-2]
+		
+        \begin{lstlisting}[language=C++, inputencoding={utf8}, extendedchars=false]     
+void setup(){
+  Serial.begin(9600);
+	
+  // Initiale Messung auf Pin 4
+  dallas(4);
+  
+}
+
+void loop(){
+  // Messung der Temperatur
+  int16_t temp = dallas(4);
+  
+  // Anzeigen der Temperatur
+  Serial.println(temp);
+  
+}
+
+        \end{lstlisting}
+        
+\end{file}
+Im Groben, holen wir uns hier nur den Binärwert vom Sensor und teilen ihn durch 16. Die 16 ergibt sich aus einer Tabelle aus dem Datenblatt, wo man alle Werte über 0 Null einfach nur das 16-fache der Temperatur sind. Man kann damit zwar keine negativen Werte berechnen, aber das ist für unsere Bedürfnisse vollkommen ausreichend.\\
+\\
+Um den Roboter so wenig wie möglich zu belasten und somit eine eine schnelle Reaktionszeit zu ermöglichen, wird die Temperaturmessung nur alle 100ms durchgeführt und nur jede Sekunde durch den Funkcontroller abgefragt.  
+
 \newpage
 \section{Ultraschallsensor} %Nick
 
