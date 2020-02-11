@@ -327,6 +327,8 @@ Die Umsetzung ist nichts anderes als die PWM-Werte für die beiden Motoren in je
 
 \newpage
 \section{Arduino Libaries} %Lukas
+\subsection{OneWire}
+OneWire ist eine serielle Schnittstelle, die nur mit einer Datenleitung auskommt. Jedes angeschlossene Gerät hat eine eigene 64bit ROM Adresse, die man gezielt ansprechen kann. Alternativ, kann man Befehle an alle Geräte senden indem man den Skip ROM-Command (0xCC) benutzt. Anschließend kommt der eigentliche Befehl mit write(), der ausgeführt werden soll. Danach werden die Daten auf ein Scratchpad-Speicher geschrieben von wo sie per read() gelesen werden können. 
 
 \newpage
 \section{Motorsteuerung} %Yves
@@ -456,7 +458,7 @@ Zum Empfangen des Echo nutzen wir einen Pinchange Interrupt. Diese ISR wird ausg
 \\
 In der ISR messen wir die Zeit bis ein Echo ankommt und teilen es, wie im Datenblatt beschrieben, durch 58 um die Distanz in cm zu bekommen.
 
-\begin{file}[HC-SR04-1]
+\begin{file}[HC-SR04]
 		
         \begin{lstlisting}[language=C++, inputencoding={utf8}, extendedchars=false]   
 // Trigger- und Echo Pins setzen  
