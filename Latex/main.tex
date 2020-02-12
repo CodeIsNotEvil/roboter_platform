@@ -331,103 +331,18 @@ Die Umsetzung ist nichts anderes als die PWM-Werte für die beiden Motoren in je
 OneWire ist eine serielle Schnittstelle, die nur mit einer Datenleitung auskommt. Jedes angeschlossene Gerät hat eine eigene 64bit ROM Adresse, die man gezielt ansprechen kann. Alternativ, kann man Befehle an alle Geräte senden indem man den Skip ROM-Command (0xCC) benutzt. Anschließend kommt der eigentliche Befehl mit write(), der ausgeführt werden soll. Danach werden die Daten auf ein Scratchpad-Speicher geschrieben von wo sie per read() gelesen werden können. 
 
 \newpage
-\section{Gedruckte Bauteile} %Yves
-
-Alle gedruckten Bauteile haben wir selbst entworfen. einsehbar sind diese im Repositorium als STL oder aber auch unter den öffentlichen Fusion 360 Links.
-\newline
-%Platine 
-\begin{figure}[h]
-	\centering 
-    \subfigure[Rahmen \cite{HC-SR04_Halterung}]{\includegraphics[width=7.5cm]{hc-sr04_rahmen.png}} 
-    \subfigure[Winkel \cite{HC-SR04_Halterung}]{\includegraphics[width=7.5cm]{hc-sr04_winkel.png}} 
-\caption{HC-SR04 Halterung} 
-\end{figure}
-
-\begin{figure}[h]
-	\includegraphics[width=7cm]{schalterhalterung.png}
-	\centering
-	\caption{Schalterhalterung \cite{Schalterhalterung}}
-\end{figure} 
-
-\begin{figure}
-        \centering
-        \begin{minipage}[t]{0.48\textwidth}
-                \includegraphics[width=\textwidth]{joystickhalterung.png}
-                \caption{Joystick Halterung \cite{Joystick_Halterung}}
-        \end{minipage}\hfill
-        \begin{minipage}[t]{0.48\textwidth}
-                \includegraphics[width=\textwidth]{kugelrad.png}
-                \caption{Kugelrad \cite{Kugelrad}}
-        \end{minipage}
-        \medskip
-
-        \begin{minipage}[t]{0.48\textwidth}
-                \includegraphics[width=\textwidth]{rad.png}
-                \caption{Räder \cite{Raeder}}
-        \end{minipage}\hfill
-        \begin{minipage}[t]{0.48\textwidth}
-                \includegraphics[width=\textwidth]{plattform.png}
-                \caption{Roboter Plattform \cite{Plattform}}
-        \end{minipage}
-       
-\end{figure}
-
-\newpage
 \section{Motorsteuerung} %Yves
-
-Die Steuerung der Motoren wurde über den IC MX1508 realisiert. Dieser ist sehr günstig als Modul für etwa 1€ erhältlich.
-Mit seinen Spezifikationen von max. 10V Versorgungsspannung und maximal 1,5A war er perfekt für dieses Projekt geeignet.
-Leider konnten wir kein Datenblatt zu diesem IC finden, die Angaben stammen lediglich aus den Beschreibungen der Händler die dieses Modul verkaufen.
-Es scheint sich um einen Treiber mit H-Brücke bzw. doppelter H-Brücke zu handeln, er verfügt über jeweils zwei Kanäle mit je zwei Eingängen. Je nach Polung der Eingänge kann ein Motor vorwärts oder rückwärts drehen.
-Um die Geschwindigkeit der Motoren regulieren zu können schrieben wir eine Bibliothek mit dem Namen L298N (Achtung, nicht mit der gleichnamigen Bibliothek im Librarymanager der Arduino IDE zu verwechseln!).
-Der Name ist angelehnt an den gleichnamigen IC, welcher dem MX1508 in seiner Ansteuerung ähnelt.
-Die Bibliothek nutzt Timer1 als 8-Bit Timer für die im Atmega328p integrierten PWM-Module OC1A und OC1B.
-Ein PWM Pin ist mit jeweils einem der beiden Eingangspins eines Kanals des MX1508 verbunden. Der jeweils andere Pin muss kein PWM Pin sein, muss aber je nach Drehrichtung korrekt gepolt sein. Für diese nicht-PWM-Pins haben wir die Portpins B0 (Kanal A) und D7 (Kanal B) verwendet.
-\newline
-Im folgenden Code ist exemplarisch zu sehen, wie das setzen eines PWM Wertes für Kanal A abläuft. Valide PWM-Werte sind -255 bis +255.
-
-
-\begin{file}[MX1508]
-        \begin{lstlisting}[language=C++]
- L298N::setPWM_A(int16_t pwmA) {
-   if(pwmA < 0) {
-     PWMA = 0xFF + pwmA;
-     PORT_A |= PIN_A;
-   } else {
-     if(pwmA == 0) {
-       PWMA = 0;
-       PORT_A &= ~PIN_A;
-     } else {
-       PWMA = pwmA;
-       PORT_A &= ~PIN_A;
-     }
-   }
- }
-        \end{lstlisting}
-\end{file}
-
-Zunächst wird geprüft, ob der PWM-Wert "`pwmA"'  negativ ist. Davon hängt die Polung von "`PIN\_A"' ab und ob der PWM-Wert negiert werden muss.
-\newline
-Anschließend werden PWM-Wert und der Zustand des nicht-PWM-Pins entsprechend gesetzt.
-
-\newpage
-\begin{figure}[h]
-	\includegraphics[width=12cm]{MX1508.png}
-	\centering
-	\caption{MX1508 Anschluss \cite{MX1508}}
-\end{figure} 
-
 
 %Folgende beiden ließen sich auch durch subsections mittels sensoric als section realisieren, kommt aber auf die menge des textes an subsections sollten nicht über eine halbe seite lang sein.
 \newpage
 \section{Thermosensor} %Nick
 Wie bereits erwähnt benutzen wir einen Dallas DS18b20  1-Wire Digital Thermometer, um die Motortemperatur zu messen. Der DS18b20 speichert die Temperatur als einen 9bit - 12bit Wert und kann Temperaturen im Bereich von -55°C bis 125°C messen. Für unsere Bedürfnisse reicht es wenn wir in 1-er Schritten messen. Der Sensor kommt aber auch mit kleineren Inkrementen zu recht. Der Sensor benötigt die OneWire-Library um angesprochen zu werden.\\
-
 \begin{figure}[h]
 	\includegraphics[width=12cm]{ds18b20.jpg}
 	\centering
 	\caption{Der benutzte Sensor \\1) Erdung 2) Datenleitung 3) Spannung}
 \end{figure}
+\\
 Eine Messung wird durchgeführt indem der Sensor Takte, innerhalb eines Zeitfensters zählt. Der Zähler startet bei einem Wert, der -55°C darstellt. Erreicht der Zähler 0 schneller als das vorgegebene Zeitfenster wird das Temperaturregister inkrementiert. Der Zähler wird dann auf einen vom Slope Accumulator Circuitry abhängigen wert gestellt und wieder runtergezählt. Dies wiederholt sich solange bis das festgelegte Zeitfenster abgelaufen ist. \\
 \\
 Es gibt verschiedene Wege den Code für den Sensor zu implementieren. Der einfachste Weg wäre die DallasTemperature-Library zu benutzen.
@@ -504,6 +419,7 @@ Zur Messung der Distanz zu einem Objekt vor dem Robotor benutzen wir einen HC-SR
 	\centering
 	\caption{Der benutzte Sensor \\1) Spannung 2) Trigger Pin 3) Echo Pin 4) Erdung}
 \end{figure} 
+\\
 Die Implementation ist relativ einfach. Wir setzen den Trigger Pin als Ausgang und den Echo Pin als Eingang. Wir senden mit dem Trigger Pin, dann ein Signal, welches vom Echo Pin empfangen wird und rechnen dann die Zeit die dafür gebraucht wurde in cm um.\\
 \\
 Zum Empfangen des Echo nutzen wir einen Pinchange Interrupt. Diese ISR wird ausgeführt, wenn ein Signal an einen bestimmten Pin kommt. Dazu aktivieren wir die nötigen PCINTs im PCIRC Register und PCMSK2 das bit für unseren Pin.\\
