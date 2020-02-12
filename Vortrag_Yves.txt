@@ -1,0 +1,24 @@
+Mechanik:
+-Entwurf mit Autodesk Fusion 360
+-entworfene Teile gedruckt
+-ursprünglicher Entwurf (Teile zum vorzeigen)
+-2x Mabuchi N20 mit Getriebe (300UPM)
+
+
+Elektronik:
+-Entwurf der Schaltung mit Abacom Sprint Layout 6
+-Platine mit Tonertransfermethode beschichtet
+-grobe Strukturen, einfacheres Ätzen
+-Trägerplatine für Module: 
+	-MX1508, Motortreiber, 10V, 1,5A, Vollbrücke
+	-MPU-6050, Gyroskopsensor
+	-Arduino Nano (Atmega328p)
+	-DS18B20, Temperatursensor
+	-NRF24, 2,4GHz Funkmodul
+-7,4V Lithium-Polymer Akku
+
+Code:
+-L298N Library
+-Kommandointerpretation
+-manuelle Digitalsteuerung
+
