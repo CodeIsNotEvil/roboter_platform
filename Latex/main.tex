@@ -19,7 +19,7 @@
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
 
-\documentclass{article}%[12pt]{article}
+\documentclass[12pt]{article}
 % Include the file specifying the document structure and custom commands
 \input{structure.tex} 
 \usepackage{hyperref}
@@ -281,14 +281,12 @@ Das Commands Array wurde dann wie in der Sektion allgemeine Verwendung von RF24 
 Der Roboter kann über ein Steuerkreuz mit 4 Buttons oder einen Joystick gesteuert werden. Begonnen wurde mit der Steuerung über die Buttons, dann wurde die Steuerung mittels Joystick realisiert und anschließend wurde diese dann noch stark variable als C++ Library Implementiert.
 
 \subsection{Button Steuerung} %Yves/Lukas
-%TODO WOHER KOMMT DER CODE? aus der ShiftRegButtonLib?
-Das ansprechen der Buttons erfolgte mithilfe der ShiftRegButtonLib Library
-\cite{nanoGame} %TODO Hierher?!
-Die Button Steuerung ermöglicht entweder Vorwärts, Rückwärts, Links oder Rechts zu fahren. Dabei werden die Beiden Motoren mit den jeweilig maximalen PWM-Werten angesprochen, sprich sie sind entweder eingeschaltet oder abgeschaltet.
+%TODO verwendet wurde die lib ShiftRegButtons...
+Die Button Steuerung ermöglicht entweder Vorwärts, Rückwärts, Links oder Rechts zu fahren. Dabei werden die Beiden Motoren mit den jeweilig maximalen PwM-Werten angesprochen, sprich sie sind entweder eingeschaltet oder abgeschaltet.
 \paragraph{Logik hinter der Steuerung}
 Der Roboter soll für Folgende Tasten folgende Bewegungen durchführen:
 \begin{itemize}
-\item Oben - vorwärts fahren
+\item Oben - vorwäts fahren
 \item Unten - rückwärts fahren
 \item Rechts - Drehung im Uhrzeigersinn
 \item Links - Drehung gegen den Uhrzeigersinn
@@ -296,63 +294,129 @@ Der Roboter soll für Folgende Tasten folgende Bewegungen durchführen:
 
 Realisiert wurde es folgendermaßen:
 \begin{itemize}
-\item vorwärts fahren - setzte PWM-Werte beider Motoren auf das Maximum
-\item rückwärts fahren - setzte PWM-Werte beider Motoren auf das Minimum
-\item Drehung im Uhrzeigersinn - setze den PWM-Wert des rechten Motors auf das Minimum und den des linken auf das Maximum
-\item Drehung gegen den Uhrzeigersinn - setze den PWM-Wert des rechten linken auf das Minimum und den des rechten auf das Maximum
+\item vorwäts fahren - setzte PWM-Werte beider Motoren auf das Maximum
+\item rückwärts fahren - setzte PWM-Werte beider Motoren auf das minimum
+\item Drehung im Uhrzeigersinn - setze den PWM-Wert des rechten Motors auf das minimum und den des linken auf das maximum
+\item Drehung gegen den Uhrzeigersinn - setze den PWM-Wert des rechten linken auf das minimum und den des rechten auf das maximum
 \end{itemize}
 
 \subsection{Joystick Steuerung} %Lukas
-Die Steuerung über einen Joystick ermöglicht das kontrollieren über die Aussteuerung des Joysticks. Verwendet wurde ein klassischer Joystick, welcher aus dem Consolen Bereich stammt. Da der verwendet Joystick von einen Billigproduzenten auch China stammt gibt es auch leider kein Datenblatt oder sonstige Informationen die hier verlinkt hätten werden können.
+Die Steuerung über einen Joystick ermöglicht das kontrolieren über die Aussteuerung des Joysticks. Verwendet wurde ein klassischer Joystick, welcher aus dem Consolen bereich stammt.
+%TODO Joysticknamen mit verlinkung auf datenblatt...
 \paragraph{Grundlegende Verwendung des Joysticks}
-Der Joystick besitzt zwei analoge Anschlüsse und überträgt dort werte von 0 bis 511 je nach Aussteuerung des Joysticks, jede Achse hat somit ihren eigenen Pin.
+Der Joystick besitzt zwei analoge Anschlüsse und überträt dort werte von 0 bis 511 je nach aussteuerung des Joysticks, jede Achse hat somit ihren eigenen Pin.
 Die Werte der jeweiligen Achsen können dann über AnalogRead() mit dem Pin der Achse als Argument abgefragt werden.
 Die Mittelstellung des Joysticks ist demnach bei 255.
 \subparagraph{Mapping:}
-Da der Bereich der Werte nicht zu dem der benötigten PWM-Werten passt werden diese mithilfe der map() Funktion von 0 bis 511 auf -255 bis 255 gemapt. 
-Nach dem Mapping kann die Auswertung über die Richtung durchgeführt werden um dann in den entsprechenden fällen die gemappten werte als Geschwindigkeit zu interpretieren.
-\subparagraph{Anbringung und dessen Auswirkung auf die Steuerung}
-Der Joystick wurde so an das Shield angebracht, so dass durch ein nach Vorne drücken die Achsenwerte für die Y-Achse kleiner werden und ein nach Links drücken die X-Achse ebenfalls kleiner werden. Die Aussteuerung nach Rechts folgt demnach zu einer Erhöhung der Achsenwerte der X-Achse und die Aussteuerung nach unten eine Erhöhung der Achsenwerte der Y-Achsen.   
+Da der Bereich der Werte nicht zu dem der benötigten PWM- Werten passt werden diese mithilfe der map() Funktion von 0 bis 511 auf -255 bis 255 gemapt. 
+Nach dem Mapping kann die Auswertung über die Richtung durchgeführt werden um dann in den entsprechenden fällen die gemappten werte als geschwindigkeit zu interpretieren.
+\subparagraph{Anbringung und dessen Auswrikung auf die Steuerung}
+Der Joystick wurde so an das Shield angebracht, so dass druch ein nach Vorne drücken die Achsenwerte für die Y-Achse kleiner werden und ein nach Links drücken die X-Achse ebenfalls kleiner werden. Die Aussteuerung nach Rechts folgt demnach zu einer erhöhung der Achsenwerte der X-Achse und die Aussteuerung nach unten eine erhöhung der Achsenwerte der Y-Achsen.   
 \paragraph{Logik hinter der Steuerung}
-Zuerst wurde die Logik der Button Steuerung übernommen, jedoch mit folgenden Veränderungen. 
-Vorwärtsfahren wird jetzt aktiviert, wenn der Achsenwert der Y-Achse kleiner als die Mittelstellung abzüglich eines Toleranzbereiches ist.
-Das Rückwärts-fahren wird aktiviert, wenn der Achsenwert der Y-Achse größer als die Mittelstellung zuzüglich eines Toleranzbereiches ist.
-Eine Drehung im Uhrzeigersinn wird ausgelöst, wenn der Achsenwert der X-Achse größer als die Mittelstellung zuzüglich eines Toleranzbereiches ist. Demnach wird eine Drehung gegen den Uhrzeigersinn ausgelöst, wenn der Achsenwert der X-Achse kleiner als die Mittelstellung abzüglich eines Toleranzbereiches ist.
+Zuerst wurde die Logik der Button Steuerung übernommen, jedoch mit folgenden veränderungen. 
+Vorwärtsfahren wird jetzt aktiviert, wenn der Achsenwert der Y-Achse kleiner als die Mittelstellung abzüglich einses toleranzbereiches ist.
+Das Rückwärtsfahren wird aktiviert, wenn der Achsenwert der Y-Achse größer als die Mittelstellung zuzüglich eines toleranzbereiches ist.
+Eine Drehung im Uhrzeigersinn wrid ausgelöst, wenn der Achsenwert der X-Achse größer als die Mittelstellung zuzüglich eines toleranzbereiches ist. Demnach wird eine Drehung gegen den Uhrzeigersinn ausgelöst, wenn der Achsenwert der X-Achse kleiner als die Mittelstellung abzüglich eines toleranzbereiches ist.
 In dieser Version ist der Toleranzbereich im Code mit 20 Festgeschrieben.
 \paragraph{Umsetzung der Steuerung}
-Die Umsetzung ist nichts anderes als die PWM-Werte für die beiden Motoren in jedem der Steuerungsfälle zu ermitteln. Da die werte schon gemappt wurden können diese nun hier wieder verwendet werden. In der Folgenden Graphik ist zu erkennen wann welche Aktion Ausgeführt werden soll. Wenn zum Beispiel der Joystick nach Vorne-rechts gerückt wird ist der wert von der X-Achse über dem Mittelwert und der der Y-Achse unter dem Mittelwert. Demnach werden dann die PWM-Werte entsprechend gesetzt.
-\begin{figure}[h]
-	\includegraphics[width=8cm]{JoystickToLogic.png}
-	\centering
-	\caption{Interpretation der Aussteuerung}
-\end{figure}
+Die Umsetzung ist nichts anderes als die PWM-Werte für die beiden Motoren in jedem der Steuerungsfälle zu ermitteln. Da die werte schon gemappt wurden können diese nun hier wieder verwendet werden. In der Folgenden Graphik ist zu erkennen wann welche werte gesendet werden und ab welcher Aussterung die PWM-Werte negativ bzw. positiv werden.
+%TODO Graphik für die Übersetzung
 
 \subsection{Überführung der Joystick Steuerung in eine Library} %Lukas
-Hier wurde besonderes Augenmerk auf Wiederverwendbarkeit und Variabilität gelegt.
-Des weiteren ist die Library komplett in C++ geschrieben. Wie genau eine C++ Library erstellt wird, wird in dieser Sektion nicht aufgefasst sondern nur die Besonderheiten betreffend der Joystick Library.
-\subsection{Aufbau der Klassen}
-Um eine höhere Variabilität und Wiederverwendbarkeit zu ermöglichen wurde die Library Objekt Orientiert programmiert. Dazu wurden drei Klassen Implementiert: Joystick, Motor und Steuerung.
-\begin{figure}[h]
-	\includegraphics[width=13cm]{JoystickUML.PNG}
-	\centering
-	%\caption{Interpretation der Aussteuerung}
-\end{figure}\begin{figure}[h]
-	\includegraphics[width=7cm]{MotorUML.PNG}
-	\centering
-	%\caption{Interpretation der Aussteuerung}
-\end{figure}\begin{figure}[h]
-	\includegraphics[width=8cm]{SteuerungUML.PNG}
-	\centering
-	%\caption{Interpretation der Aussteuerung}
-\end{figure}
-Von diesen Klassen ist die Steuerung diejenige, welche die die eigentliche Logik beinhaltet, jedoch benötigt man zur Verwendung der implementierten Steuerung zwei Motoren und einen Joystick. Um einen Motor zu erstellen reicht es den Höchsten und den Niedrigsten PWM-Wert anzugeben. Über das Attribut PWMValue lässt sich nach dem Aufruf der updateValues() Funktion der Steuerungsklasse der Aktuelle PWM-Wert jedes Motors einzeln abrufen. Beim instantiieren der Joystick-klasse müssen mehr Daten angegeben werden. Die ersten beiden Parameter legen die Pins fest an welchen die jeweilige Achse angeschlossen ist. Die nächsten zwei sind wieder der niedrige und Höchste Wert. Zum Schluss benötigt der Joystick noch einen Wert, der einen Abstand zum Mittelpunkt von der Aktivierung der Steuerung ausschließt das sogenannte spaceing. Es wird benötigt, da der Joystick selbst in der Mittelstellung werte sendet, die über bzw unter 0 liegen.   
+%TODO Hier wurde besonderes Augenmerk auf wiederverwendbarkeit und varibilität gelegt.   
+
 \newpage
 \section{Arduino Libaries} %Lukas
 \subsection{OneWire}
 OneWire ist eine serielle Schnittstelle, die nur mit einer Datenleitung auskommt. Jedes angeschlossene Gerät hat eine eigene 64bit ROM Adresse, die man gezielt ansprechen kann. Alternativ, kann man Befehle an alle Geräte senden indem man den Skip ROM-Command (0xCC) benutzt. Anschließend kommt der eigentliche Befehl mit write(), der ausgeführt werden soll. Danach werden die Daten auf ein Scratchpad-Speicher geschrieben von wo sie per read() gelesen werden können. 
 
 \newpage
+\section{Gedruckte Bauteile} %Yves
+
+Alle gedruckten Bauteile haben wir selbst entworfen. einsehbar sind diese im Repositorium als STL oder aber auch unter den öffentlichen Fusion 360 Links.
+\newline
+%Platine 
+\begin{figure}[h]
+	\centering 
+    \subfigure[Rahmen \cite{HC-SR04_Halterung}]{\includegraphics[width=7.5cm]{hc-sr04_rahmen.png}} 
+    \subfigure[Winkel \cite{HC-SR04_Halterung}]{\includegraphics[width=7.5cm]{hc-sr04_winkel.png}} 
+\caption{HC-SR04 Halterung} 
+\end{figure}
+
+\begin{figure}[h]
+	\includegraphics[width=7cm]{schalterhalterung.png}
+	\centering
+	\caption{Schalterhalterung \cite{Schalterhalterung}}
+\end{figure} 
+
+\begin{figure}
+        \centering
+        \begin{minipage}[t]{0.48\textwidth}
+                \includegraphics[width=\textwidth]{joystickhalterung.png}
+                \caption{Joystick Halterung \cite{Joystick_Halterung}}
+        \end{minipage}\hfill
+        \begin{minipage}[t]{0.48\textwidth}
+                \includegraphics[width=\textwidth]{kugelrad.png}
+                \caption{Kugelrad \cite{Kugelrad}}
+        \end{minipage}
+        \medskip
+
+        \begin{minipage}[t]{0.48\textwidth}
+                \includegraphics[width=\textwidth]{rad.png}
+                \caption{Räder \cite{Raeder}}
+        \end{minipage}\hfill
+        \begin{minipage}[t]{0.48\textwidth}
+                \includegraphics[width=\textwidth]{plattform.png}
+                \caption{Roboter Plattform \cite{Plattform}}
+        \end{minipage}
+       
+\end{figure}
+
+\newpage
 \section{Motorsteuerung} %Yves
+
+Die Steuerung der Motoren wurde über den IC MX1508 realisiert. Dieser ist sehr günstig als Modul für etwa 1€ erhältlich.
+Mit seinen Spezifikationen von max. 10V Versorgungsspannung und maximal 1,5A war er perfekt für dieses Projekt geeignet.
+Leider konnten wir kein Datenblatt zu diesem IC finden, die Angaben stammen lediglich aus den Beschreibungen der Händler die dieses Modul verkaufen.
+Es scheint sich um einen Treiber mit H-Brücke bzw. doppelter H-Brücke zu handeln, er verfügt über jeweils zwei Kanäle mit je zwei Eingängen. Je nach Polung der Eingänge kann ein Motor vorwärts oder rückwärts drehen.
+Um die Geschwindigkeit der Motoren regulieren zu können schrieben wir eine Bibliothek mit dem Namen L298N (Achtung, nicht mit der gleichnamigen Bibliothek im Librarymanager der Arduino IDE zu verwechseln!).
+Der Name ist angelehnt an den gleichnamigen IC, welcher dem MX1508 in seiner Ansteuerung ähnelt.
+Die Bibliothek nutzt Timer1 als 8-Bit Timer für die im Atmega328p integrierten PWM-Module OC1A und OC1B.
+Ein PWM Pin ist mit jeweils einem der beiden Eingangspins eines Kanals des MX1508 verbunden. Der jeweils andere Pin muss kein PWM Pin sein, muss aber je nach Drehrichtung korrekt gepolt sein. Für diese nicht-PWM-Pins haben wir die Portpins B0 (Kanal A) und D7 (Kanal B) verwendet.
+\newline
+Im folgenden Code ist exemplarisch zu sehen, wie das setzen eines PWM Wertes für Kanal A abläuft. Valide PWM-Werte sind -255 bis +255.
+
+
+\begin{file}[MX1508]
+        \begin{lstlisting}[language=C++]
+ L298N::setPWM_A(int16_t pwmA) {
+   if(pwmA < 0) {
+     PWMA = 0xFF + pwmA;
+     PORT_A |= PIN_A;
+   } else {
+     if(pwmA == 0) {
+       PWMA = 0;
+       PORT_A &= ~PIN_A;
+     } else {
+       PWMA = pwmA;
+       PORT_A &= ~PIN_A;
+     }
+   }
+ }
+        \end{lstlisting}
+\end{file}
+
+Zunächst wird geprüft, ob der PWM-Wert "`pwmA"'  negativ ist. Davon hängt die Polung von "`PIN\_A"' ab und ob der PWM-Wert negiert werden muss.
+\newline
+Anschließend werden PWM-Wert und der Zustand des nicht-PWM-Pins entsprechend gesetzt.
+
+\newpage
+\begin{figure}[h]
+	\includegraphics[width=12cm]{MX1508.png}
+	\centering
+	\caption{MX1508 Anschluss \cite{MX1508}}
+\end{figure} 
+
 
 %Folgende beiden ließen sich auch durch subsections mittels sensoric als section realisieren, kommt aber auf die menge des textes an subsections sollten nicht über eine halbe seite lang sein.
 \newpage
@@ -481,6 +545,7 @@ In der setup() Funktion müssen wir den Trigger Pin als Ausgang und den Echo Pin
 Die measureDistance() Funktion, leitet die Messung ein. Sie gibt aus dem Trigger mit digitalWrite(trig, HIGH) Pin ein Signal an den Sensor, der dann ein Ultraschallsignal von sich für 10 Mikrosekunden abgibt, welches mit digitalWrite(trig, LOW) wieder abgestellt wird. Im Anschluss aktivieren wir die nötigen Bits im PCICR und PCMSK2 Register um den Pinchange Interrupt für unseren echo Pin zu aktivieren. Die ISR führt dann die eigentliche Messung mit pulseIn(echo, HIGH) durch und deaktivieren Pinchange Register wieder damit die ISR nicht versehentlich durch ein anderes Signal ausgeführt wird.\\
 \\
 Mit der Distanz die wir nun haben können wir den Roboter stoppen lassen, wenn er zu nah an einen Gegenstand ranfährt. Ihn aber komplett zu stoppen wäre unsinnig, da er sich überhaupt nicht mehr bewegen könnte. Also gucken wir nach den Motorgeschwindigkeiten und setzen diese nur auf 0 wenn sie mit einer Vorwärtsbewegung übereinstimmen. Somit kann sich unser Roboter immer noch auf der Stelle drehen oder rückwärts fahren um das Hindernis zu umgehen. 
+
 \newpage
 %----------------------------------------------------------------------------------------
 %	Latex Beispeiele
