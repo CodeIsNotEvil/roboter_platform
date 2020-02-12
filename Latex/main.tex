@@ -352,104 +352,19 @@ Von diesen Klassen ist die Steuerung diejenige, welche die die eigentliche Logik
 OneWire ist eine serielle Schnittstelle, die nur mit einer Datenleitung auskommt. Jedes angeschlossene Gerät hat eine eigene 64bit ROM Adresse, die man gezielt ansprechen kann. Alternativ, kann man Befehle an alle Geräte senden indem man den Skip ROM-Command (0xCC) benutzt. Anschließend kommt der eigentliche Befehl mit write(), der ausgeführt werden soll. Danach werden die Daten auf ein Scratchpad-Speicher geschrieben von wo sie per read() gelesen werden können. 
 
 \newpage
-\section{Gedruckte Bauteile} %Yves
-
-Alle gedruckten Bauteile haben wir selbst entworfen. einsehbar sind diese im Repositorium als STL oder aber auch unter den öffentlichen Fusion 360 Links.
-\newline
-%Platine 
-\begin{figure}[h]
-	\centering 
-    \subfigure[Rahmen \cite{HC-SR04_Halterung}]{\includegraphics[width=7.5cm]{hc-sr04_rahmen.png}} 
-    \subfigure[Winkel \cite{HC-SR04_Halterung}]{\includegraphics[width=7.5cm]{hc-sr04_winkel.png}} 
-\caption{HC-SR04 Halterung} 
-\end{figure}
-
-\begin{figure}[h]
-	\includegraphics[width=7cm]{schalterhalterung.png}
-	\centering
-	\caption{Schalterhalterung \cite{Schalterhalterung}}
-\end{figure} 
-
-\begin{figure}
-        \centering
-        \begin{minipage}[t]{0.48\textwidth}
-                \includegraphics[width=\textwidth]{joystickhalterung.png}
-                \caption{Joystick Halterung \cite{Joystick_Halterung}}
-        \end{minipage}\hfill
-        \begin{minipage}[t]{0.48\textwidth}
-                \includegraphics[width=\textwidth]{kugelrad.png}
-                \caption{Kugelrad \cite{Kugelrad}}
-        \end{minipage}
-        \medskip
-
-        \begin{minipage}[t]{0.48\textwidth}
-                \includegraphics[width=\textwidth]{rad.png}
-                \caption{Räder \cite{Raeder}}
-        \end{minipage}\hfill
-        \begin{minipage}[t]{0.48\textwidth}
-                \includegraphics[width=\textwidth]{plattform.png}
-                \caption{Roboter Plattform \cite{Plattform}}
-        \end{minipage}
-       
-\end{figure}
-
-\newpage
 \section{Motorsteuerung} %Yves
-
-Die Steuerung der Motoren wurde über den IC MX1508 realisiert. Dieser ist sehr günstig als Modul für etwa 1€ erhältlich.
-Mit seinen Spezifikationen von max. 10V Versorgungsspannung und maximal 1,5A war er perfekt für dieses Projekt geeignet.
-Leider konnten wir kein Datenblatt zu diesem IC finden, die Angaben stammen lediglich aus den Beschreibungen der Händler die dieses Modul verkaufen.
-Es scheint sich um einen Treiber mit H-Brücke bzw. doppelter H-Brücke zu handeln, er verfügt über jeweils zwei Kanäle mit je zwei Eingängen. Je nach Polung der Eingänge kann ein Motor vorwärts oder rückwärts drehen.
-Um die Geschwindigkeit der Motoren regulieren zu können schrieben wir eine Bibliothek mit dem Namen L298N (Achtung, nicht mit der gleichnamigen Bibliothek im Librarymanager der Arduino IDE zu verwechseln!).
-Der Name ist angelehnt an den gleichnamigen IC, welcher dem MX1508 in seiner Ansteuerung ähnelt.
-Die Bibliothek nutzt Timer1 als 8-Bit Timer für die im Atmega328p integrierten PWM-Module OC1A und OC1B.
-Ein PWM Pin ist mit jeweils einem der beiden Eingangspins eines Kanals des MX1508 verbunden. Der jeweils andere Pin muss kein PWM Pin sein, muss aber je nach Drehrichtung korrekt gepolt sein. Für diese nicht-PWM-Pins haben wir die Portpins B0 (Kanal A) und D7 (Kanal B) verwendet.
-\newline
-Im folgenden Code ist exemplarisch zu sehen, wie das setzen eines PWM Wertes für Kanal A abläuft. Valide PWM-Werte sind -255 bis +255.
-
-
-\begin{file}[MX1508]
-        \begin{lstlisting}[language=C++]
- L298N::setPWM_A(int16_t pwmA) {
-   if(pwmA < 0) {
-     PWMA = 0xFF + pwmA;
-     PORT_A |= PIN_A;
-   } else {
-     if(pwmA == 0) {
-       PWMA = 0;
-       PORT_A &= ~PIN_A;
-     } else {
-       PWMA = pwmA;
-       PORT_A &= ~PIN_A;
-     }
-   }
- }
-        \end{lstlisting}
-\end{file}
-
-Zunächst wird geprüft, ob der PWM-Wert "`pwmA"'  negativ ist. Davon hängt die Polung von "`PIN\_A"' ab und ob der PWM-Wert negiert werden muss.
-\newline
-Anschließend werden PWM-Wert und der Zustand des nicht-PWM-Pins entsprechend gesetzt.
-
-\newpage
-\begin{figure}[h]
-	\includegraphics[width=12cm]{MX1508.png}
-	\centering
-	\caption{MX1508 Anschluss \cite{MX1508}}
-\end{figure} 
-
 
 %Folgende beiden ließen sich auch durch subsections mittels sensoric als section realisieren, kommt aber auf die menge des textes an subsections sollten nicht über eine halbe seite lang sein.
 \newpage
 \section{Thermosensor} %Nick
-Wie bereits erwähnt benutzen wir einen Dallas DS18b20  1-Wire Digital Thermometer, um die Motortemperatur zu messen. Der DS18b20 speichert die Temperatur als einen 9bit - 12bit Wert und kann Temperaturen im Bereich von -55°C bis 125°C messen. Für unsere Bedürfnisse reicht es wenn wir in 1-er Schritten messen. Der Sensor kommt aber auch mit kleineren Inkrementen zu recht. Der Senser benötig jedoch die OneWire Library.\\
-
+Wie bereits erwähnt benutzen wir einen Dallas DS18b20  1-Wire Digital Thermometer, um die Motortemperatur zu messen. Der DS18b20 speichert die Temperatur als einen 9bit - 12bit Wert und kann Temperaturen im Bereich von -55°C bis 125°C messen. Für unsere Bedürfnisse reicht es wenn wir in 1-er Schritten messen. Der Sensor kommt aber auch mit kleineren Inkrementen zu recht. Der Sensor benötigt die OneWire-Library um angesprochen zu werden.\\
 \begin{figure}[h]
 	\includegraphics[width=12cm]{ds18b20.jpg}
 	\centering
 	\caption{Der benutzte Sensor \\1) Erdung 2) Datenleitung 3) Spannung}
 \end{figure}
-Eine Messung wird durchgeführt indem der Sensor Takte, innerhalb eines Zeitfensters zählt. Der Zähler startet bei einem Wert, der -55°C darstellt. Erreicht der Zähler 0 schneller als das vorgegebene Zeitfenster wird das Temperaturregister inkrementiert. Der Zähler wird auf einen vom Slope Accumulator Circuitry abhängigen wert gestellt und wieder runtergezählt. Dies wiederholt sich solange bis das festgelegte Zeitfenster abgelaufen ist. \\
+\\
+Eine Messung wird durchgeführt indem der Sensor Takte, innerhalb eines Zeitfensters zählt. Der Zähler startet bei einem Wert, der -55°C darstellt. Erreicht der Zähler 0 schneller als das vorgegebene Zeitfenster wird das Temperaturregister inkrementiert. Der Zähler wird dann auf einen vom Slope Accumulator Circuitry abhängigen wert gestellt und wieder runtergezählt. Dies wiederholt sich solange bis das festgelegte Zeitfenster abgelaufen ist. \\
 \\
 Es gibt verschiedene Wege den Code für den Sensor zu implementieren. Der einfachste Weg wäre die DallasTemperature-Library zu benutzen.
 
@@ -457,98 +372,65 @@ Es gibt verschiedene Wege den Code für den Sensor zu implementieren. Der einfac
         \begin{lstlisting}[language=C++]
 #include <OneWire.h>
 #include <DallasTemperature.h>
-
-// OneWire auf Pin 4 setzen			
-OneWire oneWire(4);
-
-// DallasTemperatures den OneWire zuweisen
+		
+OneWire oneWire(x);
 DallasTemperatures sensors(&oneWire);
 
 void setup(){
-  Serial.begin(9600);
-	
+  Serial.begin(9600);	
   // Die Library starten
   sensors.begin();
 }
 
 void loop(){
   // Temperaturmessung anfordern
-  sensors.requestTemperatures();
-	
+  sensors.requestTemperatures();	
   // Temperatur anzeigen
-  Serial.print(sensors.getTempCByIndex(0));
+  Serial.print(sensors.getTempCByIndex(y));
   
 }
 
         \end{lstlisting}
 \end{file}
-Das war auch der erste Ansatz. Der Clue an der Sache ist jedoch, dass die Prozedur auf die Weise etwa 600ms dauert und das den Roboter viel zu lange blockieren würde, da er in der Zeit keine weiteren Befehle verarbeiten kann. Also wurde diese Idee gestrichen und nach einer effizienteren Alternative gesucht.\\
+OneWire wird auf Pin 4 initialisiert, dann wird OneWire an sensors() übergeben. Damit weiß die Library wo der Sensor angeschlossen ist. Mit sensors.begin() startet man die Library. Eine Messung fordert man mit requestTemperatures() an und mit getTempCByIndex(y) kann man einen bestimmten Sensor, wenn man mehrere hat, nach der Temperatur in Grad Celsius abfragen. Mit der Library ist das ganze also sehr einfach.\\
+\\
+Das war auch der erste Ansatz. Der Clue an der Sache ist jedoch, dass die Prozedur auf die Weise etwa 600ms dauert und das den Roboter viel zu lange blockieren würde, da er in der Zeit keine weiteren Befehle verarbeiten kann. Also wurde diese Idee mitsamt der Library gestrichen und nach einer effizienteren Alternative gesucht.\\
 \\ 
 Für unsere Implementierung haben wir uns an\\ \url{https://www.scargill.net/reading-dallas-ds18b20-chips-quickly/} orientiert. Dieses Beispiel ermöglicht es eine Messung in nur 5ms durchzuführen. Es wurden jedoch einige Änderungen in der Umrechnung der Temperatur gemacht. Da ein Einsatz in negativen Temperaturen nicht vorgesehen ist, machen wir eine viel simplere Umrechnung als die im Blog. \\
 \\
 
 
-\begin{file}[DS18B20-1]	
+\begin{file}[DS18B20]	
         \begin{lstlisting}[language=C++, inputencoding={utf8}, extendedchars=false]        
 #include <OneWire.h>
-// DallasTemperature Library nicht notwendig
+
 int16_t dallas(int x){
-  // Initialisierung von OneWire auf Pin x  
+  // Initialisiergung
   OneWire ds(x); 
-  // Initialisierung unserer Prozesswerte
-  byte i;
   byte data[2];
-  int16_t result;
-  // Chip zurücksetzen
+  int16_t result = 0;
+  // Auf Scratchpad schreiben
   ds.reset(); 
-  // Rom überspringen
   ds.write(0xCC);
-  // Auslesen der Werte  aus dem Scratchpad
   ds.write(0xBE); 
-  result = 0;
-  // Die Datenbytes speichern
-  for(i = 0; i < 2; i++){
+  // Vom Scratchpad lesen
+  for(int i = 0; i < 2; i++){
     data[i] = ds.read();
   } 
-  // Umrechnung der Werte in Grad Celsius
   result = (data[1]<<8)|data[0];
   result = result/16;
+  // Messen
   ds.reset();
   ds.write(0xCC);  
-  // Messung starten
   ds.write(0x44, 1);
   return result;
 }
         \end{lstlisting}
         
 \end{file}
-
-\begin{file}[DS18B20-2]
-		
-        \begin{lstlisting}[language=C++, inputencoding={utf8}, extendedchars=false]     
-void setup(){
-  Serial.begin(9600);
-	
-  // Initiale Messung auf Pin 4
-  dallas(4);
-  
-}
-
-void loop(){
-  // Messung der Temperatur
-  int16_t temp = dallas(4);
-  
-  // Anzeigen der Temperatur
-  Serial.println(temp);
-  
-}
-
-        \end{lstlisting}
-        
-\end{file}
-Im Groben, holen wir uns hier nur den Binärwert vom Sensor und teilen ihn durch 16. Die 16 ergibt sich aus einer Tabelle aus dem Datenblatt, aus der sich alle Werte über 0 Null einfach als das 16-fache der Temperatur bilden. Man kann damit zwar keine negativen Werte berechnen, aber das ist für unsere Bedürfnisse vollkommen ausreichend.\\
-\\
-Um den Roboter so wenig wie möglich zu belasten und somit eine eine schnelle Reaktionszeit zu ermöglichen, wird die Temperaturmessung nur alle 100ms durchgeführt und nur jede Sekunde durch den Funkcontroller abgefragt.  
+Wir initialsieren im Beipspiel OneWire auf einen beliebigen Pin und setzen den Sensor mit reset() zurück. Die ROM Adresse wird dabei mit write(0xCC) übersprungen, da wir nur einen Temperatursensor haben und es somit reicht, dass wir alle Geräte auf dieser OneWire-Verbindung ansprechen.Mit write(0xBE) wird dem Sensor gesagt, dass er die Werte auf dem Scratchpad speichern soll, die wir dann mit read() in einen Array einlesen. Die Werte im Array führen wir dann zusammen und teilen sie durch 16. Die 16 ergibt sich aus einer Tabelle aus dem Datenblatt. Bei genauerer Betrachtung stellt man Fest, dass die Temperatur Werte über 0 einfach nur die Binärwerte geteilt durch 16 sind. da es für unsere Bedürfnisse genügt, dass wir nur die positiven Werte messen, belassen wir es bei dieser einfachen Umrechnung. Dann wird der Chip wieder resetet, die Addresierung übersprungen  und mit write(0x44) eine Messung durchgeführt. Es empfiehlt sich in der setup() Funktion die dallas() Funtion aufzurufen, damit er in der loop() den richtigen Wert erhält.\\
+\\   
+Um den Roboter so wenig wie möglich zu belasten und somit eine eine schnelle Reaktionszeit zu ermöglichen, wird die Temperaturmessung nur alle 100ms durchgeführt und nur jede Sekunde durch den Funkcontroller abgefragt. Die Abfrage wird, aus Übersichtsgründen, abseits der Steuerung gemacht.
 
 \newpage
 \section{Ultraschallsensor} %Nick
@@ -558,6 +440,7 @@ Zur Messung der Distanz zu einem Objekt vor dem Robotor benutzen wir einen HC-SR
 	\centering
 	\caption{Der benutzte Sensor \\1) Spannung 2) Trigger Pin 3) Echo Pin 4) Erdung}
 \end{figure} 
+\\
 Die Implementation ist relativ einfach. Wir setzen den Trigger Pin als Ausgang und den Echo Pin als Eingang. Wir senden mit dem Trigger Pin, dann ein Signal, welches vom Echo Pin empfangen wird und rechnen dann die Zeit die dafür gebraucht wurde in cm um.\\
 \\
 Zum Empfangen des Echo nutzen wir einen Pinchange Interrupt. Diese ISR wird ausgeführt, wenn ein Signal an einen bestimmten Pin kommt. Dazu aktivieren wir die nötigen PCINTs im PCIRC Register und PCMSK2 das bit für unseren Pin.\\
@@ -567,52 +450,37 @@ In der ISR messen wir die Zeit bis ein Echo ankommt und teilen es, wie im Datenb
 \begin{file}[HC-SR04]
 		
         \begin{lstlisting}[language=C++, inputencoding={utf8}, extendedchars=false]   
-// Trigger- und Echo Pins setzen  
 int trig = 3;
 int echo = 4; 
 long distance;        
 
 ISR(PCINT2_vect) {
   //Zeit des Signals messen
-  distance = pulseIn(echo, HIGH);
-  distance = distance/58;  
-  // Pinchange Interrupt ausmachen
+  distance = pulseIn(echo, HIGH)/58;
+  // Pinchange Interrupt ausschalten
   PCICR &= ~0b00000111;
-  PCMSK2 &= ~(1 << echo);
-   
-  delayMicroseconds(10);
-  
+  PCMSK2 &= ~(1 << echo);   
+  delayMicroseconds(10);  
 }
 
 void measureDistance(){
-  // Signal für Messung abgeben
+  // Signal zur Messung abgeben
   digitalWrite(trig, HIGH);  
   delayMicroseconds(10);
-  // Signal für Messung abgeben
+  // Signal zur Messung abschalten
   digitalWrite(trig, LOW); 
   // Pinchange Interrupt aktivieren
   PCICR |= 0b00000100;
-  PCMSK2 |= (1 << echo);
-       
+  PCMSK2 |= (1 << echo);     
 }
-
-void setup(){
-  // Trigger Pin als Ausgang setzen
-  pinMode(trig, OUTPUT);
-  // Echo Pin als Eingang setzen
-  pinMode(echo, INPUT);
-  // Trigger resetten
-  digitalWrite(trig, LOW);
-}
-
-void loop(){
-	// Distanz messen
-	measureDistance();
-}
-
         \end{lstlisting}
         
 \end{file}
+In der setup() Funktion müssen wir den Trigger Pin als Ausgang und den Echo Pin als Eingang definieren und ein initiales Sigal mit dem trigger Pin senden.\\
+\\
+Die measureDistance() Funktion, leitet die Messung ein. Sie gibt aus dem Trigger mit digitalWrite(trig, HIGH) Pin ein Signal an den Sensor, der dann ein Ultraschallsignal von sich für 10 Mikrosekunden abgibt, welches mit digitalWrite(trig, LOW) wieder abgestellt wird. Im Anschluss aktivieren wir die nötigen Bits im PCICR und PCMSK2 Register um den Pinchange Interrupt für unseren echo Pin zu aktivieren. Die ISR führt dann die eigentliche Messung mit pulseIn(echo, HIGH) durch und deaktivieren Pinchange Register wieder damit die ISR nicht versehentlich durch ein anderes Signal ausgeführt wird.\\
+\\
+Mit der Distanz die wir nun haben können wir den Roboter stoppen lassen, wenn er zu nah an einen Gegenstand ranfährt. Ihn aber komplett zu stoppen wäre unsinnig, da er sich überhaupt nicht mehr bewegen könnte. Also gucken wir nach den Motorgeschwindigkeiten und setzen diese nur auf 0 wenn sie mit einer Vorwärtsbewegung übereinstimmen. Somit kann sich unser Roboter immer noch auf der Stelle drehen oder rückwärts fahren um das Hindernis zu umgehen. 
 \newpage
 %----------------------------------------------------------------------------------------
 %	Latex Beispeiele

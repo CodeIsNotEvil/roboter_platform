@@ -23,18 +23,18 @@ void loop() {
   
   while(!tasten.getButtonCycle(buttonStart)) {
     manualDigitalDrive();
-    //updateTemp();
+    updateTemp();
       String temp_str = "T: " + String(temperature) + " Grad C";
       lcdLines[5] = temp_str;
     refreshLCD();
   } 
-  tasten.clearButton(buttonStart);
+  tasten.clearButton(buttonStart); /*
  while(!tasten.getButtonCycle(buttonStart)){
     motorMapping();
     //updateTemp();
     refreshLCD();
   }
-  tasten.clearButton(buttonStart);
+  tasten.clearButton(buttonStart); */
   while(!tasten.getButtonCycle(buttonStart)){
     joystickSteuerung(); //TODO ()
     //updateTemp();

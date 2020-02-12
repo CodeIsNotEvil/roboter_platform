@@ -12,9 +12,9 @@
 RF24 radio(A0, 3); // CE, CSN
 
 byte commands[32];       //byte 0 = command
-unsigned long timer;
-int16_t temperature = 0;
-uint16_t distance = 50;
+
+
+
 
 void inline clearCommands() {
   for(uint8_t i=0; i<32; i++) {
@@ -64,6 +64,17 @@ volatile bool driveOn = false;
 volatile long driveTimeout = 0;
 volatile long driveTimeDiff = 0;
 
+volatile bool startNewMeasurement = true;
+
+volatile uint32_t pulseStart = 0;
+volatile uint32_t pulseLength = 1;
+
+volatile bool newResult = false;
+
+uint32_t timer = 0;
+int16_t temperature = 0;
+uint16_t distance = 50;
+
 void setup() {
   Serial.begin(115200);
 //  motorA.setPWM16(2,RESOLUTION);
@@ -83,49 +94,38 @@ void setup() {
 }
 
 void loop() {
-  //Temperatur- und Abstandsmessung
-  //Serial.println(temperature);
-  //Serial.println(distance);
-  
-
-  unsigned long currentMillis = millis();
-  
-  if((unsigned long)(currentMillis - timer) >= 100){
+  //Temperatur- und Abstandsmessung 
+  if((millis() - timer) >= 100){
     temperature = dallas(4, 0); 
-    measureDistance();
-    distance = calculateDistance(); 
-    timer = currentMillis;
-    
+    if(startNewMeasurement) {
+      measureDistance();
+    } 
+    timer = millis();
   }
-  
-  
-
+  if(newResult) {
+       // Serial.println("berechnen");
+        distance = calculateDistance();
+      }
   
   if (radio.available()) {
     radio.read(&commands, sizeof(commands));
     commandInterpretation();
   }
-  //Serial.println(driveOn);
+//Antrieb abschalten wenn kein neuer Fahrbefehl kommt
   if(((millis() - driveTimeDiff) > driveTimeout)) {
     pwmA = 0;
     pwmB = 0;
   }
 
-    
+//Wenn Mindestdistanz unterschritten, stopp 
     if(distance < 20){
-    //Serial.println("Achtung!");
     if(pwmA < 0 && pwmB < 0){
         pwmA = 0;
         pwmB = 0;
       }
     }
-    
-    
     drive.setPWM_A(pwmA);
-    drive.setPWM_B(pwmB);
-    
-
-    
+    drive.setPWM_B(pwmB); 
 }
 
 void commandInterpretation() {
@@ -184,21 +184,14 @@ void commandInterpretation() {
                         driveTime |= (0x00FF & commands[i+2]); 
                         driveTimeout = (long)driveTime;
                         driveTimeDiff = millis();
-                        Serial.println(driveTimeout);
+                        //Serial.println(driveTimeout);
                         break;
       }
-      default :  {      /* pwmA = 0;
-                      pwmB = 0;
-                      forwardA = true;
-                      forwardB = true;
-                      driveOn = false; */
-
-                      
-                      break; 
+      default :  {  
+                        break; 
       }
     }
   }
-  
   clearCommands();
   
 }
