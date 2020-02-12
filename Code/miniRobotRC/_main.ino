@@ -28,13 +28,13 @@ void loop() {
       lcdLines[5] = temp_str;
     refreshLCD();
   } 
-  tasten.clearButton(buttonStart);
+  tasten.clearButton(buttonStart); /*
  while(!tasten.getButtonCycle(buttonStart)){
     motorMapping();
     //updateTemp();
     refreshLCD();
   }
-  tasten.clearButton(buttonStart);
+  tasten.clearButton(buttonStart); */
   while(!tasten.getButtonCycle(buttonStart)){
     joystickSteuerung(); //TODO ()
     //updateTemp();

@@ -1,58 +1,5 @@
 #include <OneWire.h>
 
-#define maxDistance 400
-
-int trig;
-int echo;
-
-unsigned long distance3 = 0;
-unsigned long distance2 = 0;
-
-//ISR for PCINT2
-ISR(PCINT2_vect) {
-  distance3 = pulseIn(echo, HIGH);
-  if(distance3 > 0){
-    distance2 = distance3;
-  }
-  
-  
-  PCICR &= ~0b00000111;
-  PCMSK2 &= ~0b00010000;
-  delayMicroseconds(10);
-}
-
-void setEchoPins(int pin1, int pin2){
-  
-  trig = pin1;
-  echo = pin2;
-  
-}
-
-int16_t calculateDistance(){
-  int16_t result2 = (int16_t)(((float) distance2/ 58.0));
-  if(result2 > maxDistance){
-    result2 = maxDistance;
-  }
-  return result2;
-}
-
-void measureDistance(){
-    
-    digitalWrite(trig, HIGH);
-    // ... wait for 10 µs ...
-    
-    delayMicroseconds(10);
-    // ... put the trigger down ...
-
-    digitalWrite(trig, LOW); 
-
-    Serial.println("messe...");
-    PCICR |= 0b00000100;
-    PCMSK2 |= (1 << echo);
-    
-    
-}
-
 int16_t dallas(int x, byte start){
   
   OneWire ds(x);
@@ -85,17 +32,6 @@ int16_t dallas(int x, byte start){
 
 void tempDistSetup(){
   dallas(4, 1);
-
-  // Initializing Trigger Output and Echo Input
-   pinMode(trig, OUTPUT);
-   pinMode(echo, INPUT);
-
-   // Reset the trigger pin and wait a half a second
-   digitalWrite(trig, LOW);
-   delayMicroseconds(500);
-
-   sei();
- 
 }
 
 void runMeasurements(){
