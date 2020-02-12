@@ -333,20 +333,44 @@ OneWire ist eine serielle Schnittstelle, die nur mit einer Datenleitung auskommt
 \newpage
 \section{Gedruckte Bauteile} %Yves
 
-Alle gedruckten Bauteile haben wir selbst entworfen. einsehbar sind diese im Repositorium als STL oder aber auch unter den folgenden, öffentlichen Fusion 360 Links.
+Alle gedruckten Bauteile haben wir selbst entworfen. einsehbar sind diese im Repositorium als STL oder aber auch unter den öffentlichen Fusion 360 Links.
 \newline
+%Platine 
+\begin{figure}[h]
+	\centering 
+    \subfigure[Rahmen \cite{HC-SR04_Halterung}]{\includegraphics[width=7.5cm]{hc-sr04_rahmen.png}} 
+    \subfigure[Winkel \cite{HC-SR04_Halterung}]{\includegraphics[width=7.5cm]{hc-sr04_winkel.png}} 
+\caption{HC-SR04 Halterung} 
+\end{figure}
 
-HC-SR04 Halterung \cite{HC-SR04_Halterung}
+\begin{figure}[h]
+	\includegraphics[width=7cm]{schalterhalterung.png}
+	\centering
+	\caption{Schalterhalterung \cite{Schalterhalterung}}
+\end{figure} 
 
-Joystick Halterung \cite{Joystick_Halterung}
+\begin{figure}
+        \centering
+        \begin{minipage}[t]{0.48\textwidth}
+                \includegraphics[width=\textwidth]{joystickhalterung.png}
+                \caption{Joystick Halterung \cite{Joystick_Halterung}}
+        \end{minipage}\hfill
+        \begin{minipage}[t]{0.48\textwidth}
+                \includegraphics[width=\textwidth]{kugelrad.png}
+                \caption{Kugelrad \cite{Kugelrad}}
+        \end{minipage}
+        \medskip
 
-Kugelrad \cite{Kugelrad}
-
-Räder \cite{Räder}
-
-Roboter Plattform \cite{Plattform}
-
-Schalterhalterung \cite{Schalterhalterung}
+        \begin{minipage}[t]{0.48\textwidth}
+                \includegraphics[width=\textwidth]{rad.png}
+                \caption{Räder \cite{Räder}}
+        \end{minipage}\hfill
+        \begin{minipage}[t]{0.48\textwidth}
+                \includegraphics[width=\textwidth]{plattform.png}
+                \caption{Roboter Plattform \cite{Plattform}}
+        \end{minipage}
+       
+\end{figure}
 
 \newpage
 \section{Motorsteuerung} %Yves
@@ -382,7 +406,7 @@ Im folgenden Code ist exemplarisch zu sehen, wie das setzen eines PWM Wertes fü
         \end{lstlisting}
 \end{file}
 
-Zunächst wird geprüft, ob der PWM-Wert "`pwmA"'  negativ ist. Davon hängt die Polung von "`PIN A"' ab und ob der PWM-Wert negiert werden muss.
+Zunächst wird geprüft, ob der PWM-Wert "`pwmA"'  negativ ist. Davon hängt die Polung von "`PIN\_A"' ab und ob der PWM-Wert negiert werden muss.
 \newline
 Anschließend werden PWM-Wert und der Zustand des nicht-PWM-Pins entsprechend gesetzt.
 
