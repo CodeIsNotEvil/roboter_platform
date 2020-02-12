@@ -531,40 +531,40 @@ Die Implementation ist relativ einfach. Wir setzen den Trigger Pin als Ausgang u
 \\
 Zum Empfangen des Echo nutzen wir einen Pinchange Interrupt. Diese ISR wird ausgeführt, wenn ein Signal an einen bestimmten Pin kommt. Dazu aktivieren wir die nötigen PCINTs im PCIRC Register und PCMSK2 das bit für unseren Pin.\\
 \\
-In der ISR messen wir die Zeit bis ein Echo ankommt und teilen es, wie im Datenblatt beschrieben, durch 58 um die Distanz in cm zu bekommen.
+In der ISR messen wir die Zeit bis ein Echo ankommt und teilen es, wie im Datenblatt beschrieben, durch 58 um die Distanz in Centimetern zu bekommen.
 
 \begin{file}[HC-SR04]
 		
         \begin{lstlisting}[language=C++, inputencoding={utf8}, extendedchars=false]   
-int trig = 3;
-int echo = 4; 
-long distance;        
-
+int trig;
+int echo;
+//ISR for PCINT2
 ISR(PCINT2_vect) {
-  //Zeit des Signals messen
-  distance = pulseIn(echo, HIGH)/58;
-  // Pinchange Interrupt ausschalten
-  PCICR &= ~0b00000111;
-  PCMSK2 &= ~(1 << echo);   
-  delayMicroseconds(10);  
+  if((PIND & (1<<echo)) > 0) {
+    pulseStart = micros();
+  } else {
+    startNewMeasurement = true;
+    pulseLength = micros() - pulseStart;
+    newResult = true;
+  }
+  PCIFR = 0;
 }
 
-void measureDistance(){
-  // Signal zur Messung abgeben
-  digitalWrite(trig, HIGH);  
-  delayMicroseconds(10);
-  // Signal zur Messung abschalten
-  digitalWrite(trig, LOW); 
-  // Pinchange Interrupt aktivieren
-  PCICR |= 0b00000100;
-  PCMSK2 |= (1 << echo);     
+void measureDistance(){   
+    digitalWrite(trig, HIGH);
+    // ... wait for 10 µs ...
+    delayMicroseconds(10);
+    // ... put the trigger down ...    
+    digitalWrite(trig, LOW);     
+    //Serial.println("messe...");
+    startNewMeasurement = false;    
 }
         \end{lstlisting}
         
 \end{file}
-In der setup() Funktion müssen wir den Trigger Pin als Ausgang und den Echo Pin als Eingang definieren und ein initiales Sigal mit dem trigger Pin senden.\\
+In einer setup() Funktion müssen wir den Trigger Pin als Ausgang und den Echo Pin als Eingang definieren und ein initiales Sigal mit dem trigger Pin senden. Im Anschluss aktivieren wir die nötigen Bits im PCICR und PCMSK2 Register um den Pinchange Interrupt für unseren Echo Pin zu aktivieren.\\
 \\
-Die measureDistance() Funktion, leitet die Messung ein. Sie gibt aus dem Trigger mit digitalWrite(trig, HIGH) Pin ein Signal an den Sensor, der dann ein Ultraschallsignal von sich für 10 Mikrosekunden abgibt, welches mit digitalWrite(trig, LOW) wieder abgestellt wird. Im Anschluss aktivieren wir die nötigen Bits im PCICR und PCMSK2 Register um den Pinchange Interrupt für unseren echo Pin zu aktivieren. Die ISR führt dann die eigentliche Messung mit pulseIn(echo, HIGH) durch und deaktivieren Pinchange Register wieder damit die ISR nicht versehentlich durch ein anderes Signal ausgeführt wird.\\
+Die measureDistance() Funktion, leitet die Messung ein. Sie gibt aus dem Trigger mit digitalWrite(trig, HIGH) Pin ein Signal an den Sensor, der dann ein Ultraschallsignal von sich für 10 Mikrosekunden abgibt, welches mit digitalWrite(trig, LOW) wieder abgestellt wird. Die ISR führt dann die eigentliche Messung durch. Da die ISR bei Anfang und bei Ende des Signals aufgerufen wird, haben wir eine Fallunterscheidung eingebaut die zu Beginn des Signals die Startzeit speichert und am Ende des Signals, daraus die Pulslänge berechnet, mit der wir die Distanz bestimmen können. Dazu müssen wir die Pulslänge, wie im bereits erwähnt, durch 58 teilen.\\
 \\
 Mit der Distanz die wir nun haben können wir den Roboter stoppen lassen, wenn er zu nah an einen Gegenstand ranfährt. Ihn aber komplett zu stoppen wäre unsinnig, da er sich überhaupt nicht mehr bewegen könnte. Also gucken wir nach den Motorgeschwindigkeiten und setzen diese nur auf 0 wenn sie mit einer Vorwärtsbewegung übereinstimmen. Somit kann sich unser Roboter immer noch auf der Stelle drehen oder rückwärts fahren um das Hindernis zu umgehen. 
 
