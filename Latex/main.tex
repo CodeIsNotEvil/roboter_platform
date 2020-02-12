@@ -323,7 +323,25 @@ Die Umsetzung ist nichts anderes als die PWM-Werte für die beiden Motoren in je
 %TODO Graphik für die Übersetzung
 
 \subsection{Überführung der Joystick Steuerung in eine Library} %Lukas
-%TODO Hier wurde besonderes Augenmerk auf wiederverwendbarkeit und varibilität gelegt.   
+Hier wurde besonderes Augenmerk auf Wiederverwendbarkeit und Variabilität gelegt.
+Des weiteren ist die Library komplett in C++ geschrieben. Wie genau eine C++ Library erstellt wird, wird in dieser Sektion nicht aufgefasst sondern nur die Besonderheiten betreffend der Joystick Library.
+\subsection{Aufbau der Klassen}
+Um eine höhere Variabilität und Wiederverwendbarkeit zu ermöglichen wurde die Library Objekt Orientiert programmiert. Dazu wurden drei Klassen Implementiert: Joystick, Motor und Steuerung.
+\begin{figure}[h]
+	\includegraphics[width=13cm]{JoystickUML.PNG}
+	\centering
+	%\caption{Interpretation der Aussteuerung}
+\end{figure}\begin{figure}[h]
+	\includegraphics[width=7cm]{MotorUML.PNG}
+	\centering
+	%\caption{Interpretation der Aussteuerung}
+\end{figure}\begin{figure}[h]
+	\includegraphics[width=8cm]{SteuerungUML.PNG}
+	\centering
+	%\caption{Interpretation der Aussteuerung}
+\end{figure}
+Von diesen Klassen ist die Steuerung diejenige, welche die die eigentliche Logik beinhaltet, jedoch benötigt man zur Verwendung der implementierten Steuerung zwei Motoren und einen Joystick. Um einen Motor zu erstellen reicht es den Höchsten und den Niedrigsten PWM-Wert anzugeben. Über das Attribut PWMValue lässt sich nach dem Aufruf der updateValues() Funktion der Steuerungsklasse der Aktuelle PWM-Wert jedes Motors einzeln abrufen. Beim instantiieren der Joystick-klasse müssen mehr Daten angegeben werden. Die ersten beiden Parameter legen die Pins fest an welchen die jeweilige Achse angeschlossen ist. Die nächsten zwei sind wieder der niedrige und Höchste Wert. Zum Schluss benötigt der Joystick noch einen Wert, der einen Abstand zum Mittelpunkt von der Aktivierung der Steuerung ausschließt das sogenannte spaceing. Es wird benötigt, da der Joystick selbst in der Mittelstellung werte sendet, die über bzw unter 0 liegen.   
+ 
 
 \newpage
 \section{Arduino Libaries} %Lukas
