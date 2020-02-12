@@ -23,7 +23,7 @@ void loop() {
   
   while(!tasten.getButtonCycle(buttonStart)) {
     manualDigitalDrive();
-    //updateTemp();
+    updateTemp();
       String temp_str = "T: " + String(temperature) + " Grad C";
       lcdLines[5] = temp_str;
     refreshLCD();

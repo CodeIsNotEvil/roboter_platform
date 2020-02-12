@@ -1,7 +1,6 @@
 void manualDigitalDrive() {
 
   bool goOn = false;
- // while(!tasten.getButtonCycle(buttonL1)) {
     clearCommands();
     if(!tasten.getAnyPressed()) {
       lcdLines[0] = "Warte...";
@@ -47,7 +46,4 @@ void manualDigitalDrive() {
         radio.write(&commands, sizeof(commands));
         goOn = false;
       }
-    
-  //  }
-  //  tasten.clearAllButtons();
 }
