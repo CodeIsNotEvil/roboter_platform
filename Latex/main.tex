@@ -558,7 +558,7 @@ int trig;
 int echo;
 //ISR for PCINT2
 ISR(PCINT2_vect) {
-  if((PIND & (1<<echo)) > 0) {
+  if((PIND & 64) > 0) {
     pulseStart = micros();
   } else {
     startNewMeasurement = true;
