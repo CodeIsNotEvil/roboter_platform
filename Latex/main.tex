@@ -287,8 +287,9 @@ Das Commands Array wurde dann wie in der Sektion allgemeine Verwendung von RF24 
 Der Roboter kann über ein Steuerkreuz mit 4 Buttons oder einen Joystick gesteuert werden. Begonnen wurde mit der Steuerung über die Buttons, dann wurde die Steuerung mittels Joystick realisiert und anschließend wurde diese dann noch stark variable als C++ Library Implementiert.
 
 \subsection{Button Steuerung} %Yves/Lukas
-%TODO verwendet wurde die lib ShiftRegButtons...
-Die Button Steuerung ermöglicht entweder Vorwärts, Rückwärts, Links oder Rechts zu fahren. Dabei werden die Beiden Motoren mit den jeweilig maximalen PwM-Werten angesprochen, sprich sie sind entweder eingeschaltet oder abgeschaltet.
+Das ansprechen der Buttons erfolgte mithilfe der ShiftRegButtonLib Library
+\cite{nanoGame}
+Die Button Steuerung ermöglicht entweder Vorwärts, Rückwärts, Links oder Rechts zu fahren. Dabei werden die Beiden Motoren mit den jeweilig maximalen PWM-Werten angesprochen, sprich sie sind entweder eingeschaltet oder abgeschaltet.
 \paragraph{Logik hinter der Steuerung}
 Der Roboter soll für Folgende Tasten folgende Bewegungen durchführen:
 \begin{itemize}
@@ -307,14 +308,15 @@ Realisiert wurde es folgendermaßen:
 \end{itemize}
 
 \subsection{Joystick Steuerung} %Lukas
-Die Steuerung über einen Joystick ermöglicht das kontrolieren über die Aussteuerung des Joysticks. Verwendet wurde ein klassischer Joystick, welcher aus dem Consolen bereich stammt.
-%TODO Joysticknamen mit verlinkung auf datenblatt...
+
+Die Steuerung über einen Joystick ermöglicht das kontrollieren über die Aussteuerung des Joysticks. Verwendet wurde ein klassischer Joystick, welcher aus dem Consolen Bereich stammt. Da der verwendet Joystick von einen Billigproduzenten auch China stammt gibt es auch leider kein Datenblatt oder sonstige Informationen die hier verlinkt hätten werden können.
+
 \paragraph{Grundlegende Verwendung des Joysticks}
 Der Joystick besitzt zwei analoge Anschlüsse und überträt dort werte von 0 bis 511 je nach aussteuerung des Joysticks, jede Achse hat somit ihren eigenen Pin.
 Die Werte der jeweiligen Achsen können dann über AnalogRead() mit dem Pin der Achse als Argument abgefragt werden.
 Die Mittelstellung des Joysticks ist demnach bei 255.
 \subparagraph{Mapping:}
-Da der Bereich der Werte nicht zu dem der benötigten PWM- Werten passt werden diese mithilfe der map() Funktion von 0 bis 511 auf -255 bis 255 gemapt. 
+Da der Bereich der Werte nicht zu dem der benötigten PWM-Werten passt werden diese mithilfe der map() Funktion von 0 bis 511 auf -255 bis 255 gemapt. 
 Nach dem Mapping kann die Auswertung über die Richtung durchgeführt werden um dann in den entsprechenden fällen die gemappten werte als geschwindigkeit zu interpretieren.
 \subparagraph{Anbringung und dessen Auswrikung auf die Steuerung}
 Der Joystick wurde so an das Shield angebracht, so dass druch ein nach Vorne drücken die Achsenwerte für die Y-Achse kleiner werden und ein nach Links drücken die X-Achse ebenfalls kleiner werden. Die Aussteuerung nach Rechts folgt demnach zu einer erhöhung der Achsenwerte der X-Achse und die Aussteuerung nach unten eine erhöhung der Achsenwerte der Y-Achsen.   
@@ -325,8 +327,13 @@ Das Rückwärtsfahren wird aktiviert, wenn der Achsenwert der Y-Achse größer a
 Eine Drehung im Uhrzeigersinn wrid ausgelöst, wenn der Achsenwert der X-Achse größer als die Mittelstellung zuzüglich eines toleranzbereiches ist. Demnach wird eine Drehung gegen den Uhrzeigersinn ausgelöst, wenn der Achsenwert der X-Achse kleiner als die Mittelstellung abzüglich eines toleranzbereiches ist.
 In dieser Version ist der Toleranzbereich im Code mit 20 Festgeschrieben.
 \paragraph{Umsetzung der Steuerung}
-Die Umsetzung ist nichts anderes als die PWM-Werte für die beiden Motoren in jedem der Steuerungsfälle zu ermitteln. Da die werte schon gemappt wurden können diese nun hier wieder verwendet werden. In der Folgenden Graphik ist zu erkennen wann welche werte gesendet werden und ab welcher Aussterung die PWM-Werte negativ bzw. positiv werden.
-%TODO Graphik für die Übersetzung
+Die Umsetzung ist nichts anderes als die PWM-Werte für die beiden Motoren in jedem der Steuerungsfälle zu ermitteln. Da die werte schon gemappt wurden können diese nun hier wieder verwendet werden. In der Folgenden Graphik ist zu erkennen wann welche Aktion Ausgeführt werden soll. Wenn zum Beispiel der Joystick nach Vorne-rechts gerückt wird ist der wert von der X-Achse über dem Mittelwert und der der Y-Achse unter dem Mittelwert. Demnach werden dann die PWM-Werte entsprechend gesetzt.
+\begin{figure}[h]
+	\includegraphics[width=8cm]{JoystickToLogic.png}
+	\centering
+	\caption{Interpretation der Aussteuerung}
+\end{figure}
+
 
 \subsection{Überführung der Joystick Steuerung in eine Library} %Lukas
 Hier wurde besonderes Augenmerk auf Wiederverwendbarkeit und Variabilität gelegt.
