@@ -7,7 +7,7 @@ void remoteControlInit() {
 //Pegelwandler ein
   pinMode(_OE_LEVEL, OUTPUT);
   digitalWrite(_OE_LEVEL, HIGH);
-//Hintergrundbeleuchtung an, halbe Helligkeit  
+//Hintergrundbeleuchtung an  
   pinMode(BL, OUTPUT);
   BRIGHTNESS = 30;
 //LCD init,   invert, vop, tempcoef, bias  

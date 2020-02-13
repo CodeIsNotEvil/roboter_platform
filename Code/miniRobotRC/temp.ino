@@ -11,11 +11,6 @@
         radio.startListening();
         while(!radio.available()){
           //Serial.println("nix");
-        /*  unsigned long currentMicros = micros();
-          if((unsigned long)(currentMicros - start) >= 1){
-            
-            err = true;
-          } */
           if((millis() - temp_time) >= 10) break;
         }
         if(/* !err */ true){

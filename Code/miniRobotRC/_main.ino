@@ -19,8 +19,6 @@ void setup() {
 }
 
 void loop() {
-  //lcdMenu();
-  
   while(!tasten.getButtonCycle(buttonStart)) {
     manualDigitalDrive();
     updateTemp();
