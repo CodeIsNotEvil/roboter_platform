@@ -402,7 +402,19 @@ Alle gedruckten Bauteile haben wir selbst entworfen. einsehbar sind diese im Rep
 
 \newpage
 \section{Motorsteuerung} %Yves
+\subsection{Funktionsweise eines PWM}
+Die Pulsbreitenmodulation oder engl. Pulse Width Modulation (PWM) dient zur Variation der ausgegebenen Effektivspannung eines Ausgangs. Umgesetzt wird ein PWM überlicherweise mit einem Timer, welcher zählt bis er überläuft und wieder von vorn beginnt, sowie einem Komparator als auch einem Vergleichswert, welcher vorgibt, wie lang der Impuls ausgegeben werden soll. Ist der Wert vom Timer und dem PWM Sollwert identisch, so wird das Ausgangssignal abgeschalten.
+Durch Variation der Impulsbreite im Verhältnis zur Periodendauer ergibt sich ein Effektivwert \ <\ = der max. Signalspannung. Das Tastverhältnis hängt von der Auflösung des Timers ab. Im Falle unseres Projektes arbeitet Timer1 als 8-Bit Timer. Somit ergibt sich ein Tastverhätnis von 1:256.
+Die Grafik aus dem Atmega328p Datenblatt von Seite 133 illustriert dies noch einmal.
 
+\begin{figure}[h]
+	\includegraphics[width=16cm]{fastPWM.png}
+	\centering
+	\caption{Funktion des PWM Moduls im Atmega328p} \cite{fastPWM}
+\end{figure}
+
+
+\subsection{Implementierung}
 Die Steuerung der Motoren wurde über den IC MX1508 realisiert. Dieser ist sehr günstig als Modul für etwa 1€ erhältlich.
 Mit seinen Spezifikationen von max. 10V Versorgungsspannung und maximal 1,5A war er perfekt für dieses Projekt geeignet.
 Leider konnten wir kein Datenblatt zu diesem IC finden, die Angaben stammen lediglich aus den Beschreibungen der Händler die dieses Modul verkaufen.
