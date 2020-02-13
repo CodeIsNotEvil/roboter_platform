@@ -468,7 +468,7 @@ Wie bereits erwähnt benutzen wir einen Dallas DS18b20  1-Wire Digital Thermomet
 \begin{figure}[h]
 	\includegraphics[width=12cm]{ds18b20.jpg}
 	\centering
-	\caption{Der benutzte Sensor \\1) Erdung 2) Datenleitung 3) Spannung}
+	\caption{Der benutzte Sensor \cite{DALLAS} \\1) Erdung 2) Datenleitung 3) Spannung}
 \end{figure}
 \\
 Eine Messung wird durchgeführt indem der Sensor Takte, innerhalb eines Zeitfensters zählt. Der Zähler startet bei einem Wert, der -55°C darstellt. Erreicht der Zähler 0 schneller als das vorgegebene Zeitfenster wird das Temperaturregister inkrementiert. Der Zähler wird dann auf einen vom Slope Accumulator Circuitry abhängigen wert gestellt und wieder runtergezählt. Dies wiederholt sich solange bis das festgelegte Zeitfenster abgelaufen ist. \\
@@ -545,7 +545,7 @@ Zur Messung der Distanz zu einem Objekt vor dem Robotor benutzen wir einen HC-SR
 \begin{figure}[h]
 	\includegraphics[width=12cm]{HC-SR04.jpg}
 	\centering
-	\caption{Der benutzte Sensor \\1) Spannung 2) Trigger Pin 3) Echo Pin 4) Erdung}
+	\caption{Der benutzte Sensor \cite{HC} \\1) Spannung 2) Trigger Pin 3) Echo Pin 4) Erdung}
 \end{figure} 
 \\
 Die Implementation ist relativ einfach. Wir setzen den Trigger Pin als Ausgang und den Echo Pin als Eingang. Wir senden mit dem Trigger Pin, dann ein Signal, welches vom Echo Pin empfangen wird und rechnen dann die Zeit die dafür gebraucht wurde in cm um.\\
