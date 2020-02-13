@@ -37,21 +37,9 @@ const byte address2[6] = "00002";
 #define getDistance 10 //Abstand zu Objekten
 
 //Motortreiber
-//#include <MX1508.h>
 #include <L298N.h>
 
-#define BEEP 14
-/*
-#define PWM_PINA 10
-#define PINA 8
-#define PWM_PINB 9
-#define PINB 7
-#define NUMPWM 1
-
-#define RESOLUTION 255 */
-
-//MX1508 motorA(PWM_PINA,PINA, FAST_DECAY, NUMPWM);
-//MX1508 motorB(PWM_PINB,PINB, FAST_DECAY, NUMPWM);
+#define BEEP 14     //Motoren drehen bei diesem PWM Wert nicht, aber fiepen
 L298N drive;
 
 
@@ -61,8 +49,8 @@ bool forwardA = true;
 bool forwardB = true;
 volatile bool driveOn = false;
 
-volatile long driveTimeout = 0;
-volatile long driveTimeDiff = 0;
+volatile uint32_t driveTimeout = 0;
+volatile uint32_t driveTimeDiff = 0;
 
 volatile bool startNewMeasurement = true;
 
@@ -106,7 +94,7 @@ void loop() {
        // Serial.println("berechnen");
         distance = calculateDistance();
       }
-  
+//wurden Kommandos empfangen?  
   if (radio.available()) {
     radio.read(&commands, sizeof(commands));
     commandInterpretation();
@@ -182,7 +170,7 @@ void commandInterpretation() {
                         uint16_t driveTime = 0;
                         driveTime = (0xFF00 & (commands[i+1] << 8));
                         driveTime |= (0x00FF & commands[i+2]); 
-                        driveTimeout = (long)driveTime;
+                        driveTimeout = (uint32_t)driveTime;
                         driveTimeDiff = millis();
                         //Serial.println(driveTimeout);
                         break;
