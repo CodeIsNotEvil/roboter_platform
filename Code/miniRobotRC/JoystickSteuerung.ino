@@ -50,11 +50,11 @@ void joystickInit() {
 
   void send(){
         commands[0] = speedA;
-        commands[1] = highByte(left -> PWMValue);
-        commands[2] = lowByte(left -> PWMValue);
+        commands[1] = highByte(right -> PWMValue);
+        commands[2] = lowByte(right -> PWMValue);
         commands[3] = speedB;
-        commands[4] = highByte(right -> PWMValue);
-        commands[5] = lowByte(right -> PWMValue);
+        commands[4] = highByte(left -> PWMValue);
+        commands[5] = lowByte(left -> PWMValue);
         commands[6] = timeToDrive;
         commands[7] = highByte(driveTimeout);
         commands[8] = lowByte(driveTimeout);
