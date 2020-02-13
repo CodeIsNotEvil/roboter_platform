@@ -185,6 +185,12 @@ Alle Verbindungsleitungen wurden Freiluft auf der Rückseite der Fernsteuerung z
 \end{figure}
 
 \newpage
+\section{LCD}
+
+Als LCD kam, entsprechend dem nanoGame \cite{nanoGame} Projekt, ein monochromes Grafik-LCD mit Hintergrundbeleuchtung und einer Auflösung von 84 x 48 Pixeln zum Einsatz. Beim integrierten Controller handelt es sich um den PCD8544. Angesteuert per SPI und diversen Steuerleitungen.
+
+Da aktuell im Projekt keine Grafiken dargestellt werden, entschieden wir uns, das LCD einfach fest in 6 Zeilen einzuteilen. Um kollisionsfrei Texte ausgeben zu können, verwendeten wir ein global deklariertes Stringarray. Jeder Teil des Codes, der etwas ausgibt schreibt in ein Element bzw. in eine Zeile. die Methode "`refreshLCD()"' liest dieses Stringarray ein und gibt die 6 Zeilen auf dem LCD aus.
+
 \section{Code allgemein}%Yves
 
 Um die Einsatzmöglichkeiten für den Code möglichst flexibel zu gestalten, haben wir uns bemüht, nicht blockierenden Quelltext zu schreiben.
